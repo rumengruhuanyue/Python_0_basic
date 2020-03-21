@@ -1,6 +1,6 @@
 import random
 secret = random.randint(1,10)
-print(secret)
+# print(secret)
 print("----------文字游戏升级--------------")
 flag = 0
 temp = input('请猜测一个1-10间的数字:')
