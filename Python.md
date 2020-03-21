@@ -361,3 +361,93 @@
             True
             >>> isinstance(a,int)
             False
+            
+## 005 算数运算符
+
+### 学习笔记
+
+1. 算数运算符
+    * `+` 
+    * `*` 
+    * `/` 
+    * `%` 取余数
+    * `**` 幂运算  `3**2  # 结果就是3的2次幂，即9`
+    * `//` 表示整数除法,返回一个不大于" / "计算结果的最大整数int，特别注意如果其中一个操作数位负数，则结果必为负数。
+
+            >>> a = 5/3
+            >>> b = 5//3
+            >>> c = -5/3
+            >>> d = -5//3   # 整数除法本来结果 -1.67 不大于它的最大整数为-2（数轴向左移动，最近的整数）
+        
+            >>> print(a,b,c,d,sep=",")      # 按照规定的分隔符逗号隔开
+            1.6666666666666667,1,-1.6666666666666667,-2
+        
+            >>> print(a,b,c,d,sep="\n")     # 按照换行符隔开，结果自动换行
+            1.6666666666666667
+            1
+            -1.6666666666666667
+            -2
+        
+            >>> print(a,b,c,d)    # 默认按照1个空格隔开
+            1.6666666666666667 1 -1.6666666666666667 -2
+            关于输出print的说明：
+            >>> help(print)
+            Help on built-in function print in module builtins:
+        
+            print(...)
+                print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
+            
+                Prints the values to a stream, or to sys.stdout by default.
+                Optional keyword arguments:
+                file:  a file-like object (stream); defaults to the current sys.stdout.
+                sep:   string inserted between values, default a space.
+                end:   string appended after the last value, default a newline.
+                flush: whether to forcibly flush the stream.
+
+2. 优先级问题
+    * ![优先级高低比较](img/priority.jpg)
+    * 处于优先级同一行的遵从从左到右依次计算，金字塔上面的优先级高于下面的 
+    *
+    * 先乘除后加减
+    * 比较运算符 高于 逻辑运算符
+    * 幂运算符`**`比其左侧一元运算符优先级高，比其右侧一元运算符优先级低
+           
+            >>> -3 ** 2
+            -9
+            >>> -(3**2)
+            -9
+            >>> 3 ** - 2
+            0.1111111111111111
+            >>> 3 ** (-2)
+            0.1111111111111111
+
+3. 比较运算符：根据表达式的值的真假来返回bool 类型的值
+    * `<`       
+    * `<=`       
+    * `>`       
+    * `>=`       
+    * `==`       
+    * `!=`     
+4. 逻辑运算符
+    * `and`  # 与，都真则真   
+    * `or`   # 或者，都假才假   
+    * `not`  # 取相反类型的bool值  
+            
+            # 非零整数值都解释成True
+            
+            >>> not True
+            False
+            >>> not False
+            True
+            >>> not 0
+            True
+            >>> not 4
+            False
+            >>> 3 < 4 < 5    # 被解释成 3 < 4and  4 < 5 即：(3 < 4) and (4 < 5)
+            True
+            >>> 3 < 4and  4 < 5
+            True
+            >>> 3 < 4 and  4 < 5
+            True
+            >>> (3 < 4) and (4 < 5)
+            True  
