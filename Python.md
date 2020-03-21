@@ -1,4 +1,47 @@
-## 001
+## 目录
+
+- [001 入门简介](#001入门简介)
+    - BIF
+    - Python 简介
+- [002变量与字符串](#002变量与字符串)
+    - 变量定义规则
+    - 字符串
+        1. 原始字符串
+        2. 长字符串
+- [003条件分支及while循环及and逻辑运算符及引入模块](#003条件分支及while循环及and逻辑运算符及引入模块)
+    - 条件分支
+    - while循环
+    - and 逻辑操作符
+    - import 引入模块
+    - 猜数字文字游戏
+- [004数值类型](#004数值类型)
+    * 整型
+    * 浮点型
+    * 布尔型
+    * e记法
+        1. 类型转换：
+        2. 获取变量类型&&判断变量类型
+- [005算数运算符](#005算数运算符)
+    - 算数运算符（加减乘除，整数除法，幂运算，取余）
+    - 优先级问题（幂运算 > 正负号 > 算术运算符 > 比较运算符 > 逻辑运算符）
+    - 比较运算符（大于、小于、等于、大于等于、小于等于、不等于）
+    - 逻辑运算符（and与、or或、not非）
+- [006分支和循环](#006分支和循环)
+    - 飞机大战小游戏逻辑
+    - if分支语句
+        - 全部if，消耗大
+        - if-else 形式
+        - if-else 形式（推荐）
+    - Python可以有效避免"悬挂else"
+    - 条件表达式（三元运算符）
+        - `small = x if x < y else y`
+    - 断言（assert）
+        - 情景：需要确保程序的某个条件一定为真才能让程序正常运行
+    - 循环结构
+        - while循环
+        - for循环
+    - **待办p10**
+## 001入门简介
 
 ### 学习笔记
 
@@ -127,17 +170,19 @@
         G:\Program Files\Python\;
         添加到系统环境变量Path中
 
-## 002
+## 002变量与字符串
 
 ### 学习笔记
-* 变量
+
+1. 变量
+    * 变量声明，不需要声明其类型
     * 在使用变量前，要先对其赋值
     * 变量名可以包含字母、数字、下划线，但是变量名不可以数字开头
     * 字母可以是大写或者小写，但大写的与小写的两个变量是不同的。
-* 字符串：
+2. 字符串：
     * 创建一个字符串时，要在字符两边加上引号。单引号或者双引号都可以。
     * 需要打印引号双引号，一种方式是加转译符“\’”；另一种方式是？？？见习题
-    * 原始字符串
+    1. 原始字符串
             
             >>> str = 'C:\now'
             >>> str
@@ -170,7 +215,7 @@
             G:\Program Files\Python\ 
             >>> 
     
-    * 长字符串
+    2. 长字符串
         
             一个跨越多行的字符串，如
             
@@ -193,8 +238,7 @@
                 通常以容易修改程序的“解释”作为运行方式，而不需要“编译”
                 程序的开发产能优于运行性能
             
-            
-## 003
+## 003条件分支及while循环及and逻辑运算符及引入模块
 
 ## 学习笔记
 
@@ -208,7 +252,7 @@
 * while循环：
         
         while 条件 :
-            # 条件为真时，执行的操作（前面加一个tab符缩进）
+            # 循环体：条件为真时，执行的操作（前面加一个tab符缩进）
             
 * and 逻辑操作符，优先级小于 大于、小于 
 * 引入模块：`import 模块`
@@ -264,8 +308,31 @@
                     print('哥，小了！')
             flag = flag + 1
         print('游戏结束')
+        
+        -----------------------------
+                    更新：
+        -----------------------------
+        
+        import random
+        secret = random.randint(1,10)
+        # print(secret)
+        print("----------文字游戏升级--------------")
+        flag = 0
+        while flag < 3 :
+            temp = input('请猜测一个1-10间的数字:')
+            guess = int(temp)
+            if guess == secret :
+                print('猜对了！')
+                break # 如果猜对了，跳出循环
+            else:
+                if guess > secret :
+                    print('哥，大了大了！')
+                else :
+                    print('哥，小了！')
+            flag = flag + 1
+        print('游戏结束')
 
-## 004 数值类型
+## 004数值类型
 
 ### 学习笔记
 
@@ -330,6 +397,12 @@
               File "<pyshell#33>", line 1, in <module>
                 b = float("学习Pyhon")
             ValueError: could not convert string to float: '学习Pyhon'
+            
+            >>> int('11.22')    # 浮点型字符串不可以强制转换成int型
+            Traceback (most recent call last):
+              File "<pyshell#96>", line 1, in <module>
+                int('11.22')
+            ValueError: invalid literal for int() with base 10: '11.22'
 
 2. 获取变量类型&&判断变量类型
     * type()
@@ -362,11 +435,11 @@
             >>> isinstance(a,int)
             False
             
-## 005 算数运算符
+## 005算数运算符
 
 ### 学习笔记
 
-1. 算数运算符
+1. 算术运算符
     * `+` 
     * `*` 
     * `/` 
@@ -451,3 +524,150 @@
             True
             >>> (3 < 4) and (4 < 5)
             True  
+            
+## 006分支和循环       
+
+### 学习笔记
+
+* 引入： 飞机大战小游戏逻辑
+        
+        加载背景音乐
+        播放背景音乐（设置单曲循环）
+        我方飞机诞生
+        
+        interval = 0
+        
+        while True:
+            if 用户是否点击关闭按钮:
+                退出程序
+            
+            interval += 1
+            if interval ==50:
+                interval = 0
+                小飞机诞生
+            
+            小飞机移动一个位置
+            屏幕刷新
+            
+            if 用户鼠标产生移动:
+                我放飞机中心位置 = 用户鼠标位置
+                屏幕刷新
+            
+            if 我方飞机与小飞机发生肢体冲突:
+                我方挂，播放撞机音乐
+                修改我方飞机图案
+                打印“Game over”
+                停止背景音乐，最好淡出
+
+0. if分支语句：
+    * 例子：按照100分制，90分以上成绩为A，80-90为B，60-80为C，60以下为D，设计程序，当输入分数，自动转换成等级打印。
+    1. 全部if，消耗大
+            
+            score = int(input('请输入一个整数分数：'))
+            if 100 >= score >= 90:
+                print('A')
+            if 90 > score >= 80:   # 即使上面的语句通过，也会执行
+                print('B')
+            if 80 > score >= 60:   # 即使上面的语句通过，也会执行
+                print('C')
+            if 60 > score >= 0:    # 即使上面的语句通过，也会执行
+                print('D')
+            if score < 0 or score > 100:    # 即使上面的语句通过，也会执行
+                print('输入错误！')
+    
+    2. if-else 形式：由于缩进严格原则，所以易读性差，不美观。但是性能比1.好
+            
+            score = int(input('请输入一个整数分数：'))
+            if 100 >= score >= 90:
+                print('A')
+            else:
+                if 90 > score >= 80:
+                    print('B')
+                else:
+                    if 80 > score >= 60:
+                        print('C')
+                    else:
+                        if 60 > score >= 0:
+                            print('D')
+                        else:
+                             print('输入错误！')
+    
+    3. 使用if-elif-else，对第二种方式的改进形式，美观易读。（其中最后一个else:如不需要，可以省略）
+            
+            score = int(input('请输入一个整数分数：'))
+            if 100 >= score >= 90:
+                print('A')
+            elif 90 > score >= 80:
+                print('B')
+            elif 80 > score >= 60:
+                print('C')
+            elif 60 > score >= 0:
+                print('D')
+            else:
+                print('输入错误！')        
+            
+1. **Python可以有效避免"悬挂else"**，因为其强制缩进原则，同一个缩进级别的else匹配其相同缩进级别的if语句    
+        
+        if ( hi > 2 )    # 与下面的else配套
+            if ( hi > 7 )   # 若要与下面else配套，需要将下面else缩进
+                print("好棒！")
+        else:   # 这里的else会匹配同一缩进级别的if
+            print("切~")            
+
+2. 条件表达式（三元运算符）
+        
+        x,y = 4,5
+        if x < y:
+            small = x
+        else:
+            small = y
+        
+        -------改为三元运算符：---------
+        
+        x,y = 4,5
+        small = x if x < y else y
+
+3. 断言（assert）
+    * 当assert 关键字后面的条件为假的时候，程序崩溃，并抛出AssertionError异常         
+           
+           >>> assert 3 > 4
+           Traceback (most recent call last):
+             File "<pyshell#95>", line 1, in <module>
+               assert 3 > 4
+           AssertionError
+    
+    * 一般来说，我们可以用assert在程序中置入检查点，当需要确保程序的某个条件一定为真才能让程序正常运行的话，assert关键字就非常有用了。           
+
+4. 循环结构
+    * while循环：
+            
+            while 条件 :
+                # 循环体：条件为真时，执行的操作（前面加一个tab符缩进）
+    
+    * for循环
+            
+            for 目标 in 表达式
+                # 循环体
+        * 示例：
+        
+                # 1. 遍历字符串
+                >>> favourite = 'Python'
+                >>> for i in favourite:
+                	print(i,end = ' ')
+                
+                	
+                P y t h o n 
+                
+                # 2. 遍历数组
+                >>> member = ['Python','Java','php','C#','C']
+                >>> for each in member:
+                	print(each,len(each))
+                
+                	
+                Python 6
+                Java 4
+                php 3
+                C# 2
+                C 1     
+
+- [ ] 待办：p10   
