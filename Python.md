@@ -40,6 +40,10 @@
     - 循环结构
         - while循环
         - for循环
+    - 两个重要的控制语句
+        - break
+        - continue
+     
     - **待办p10**
 ## 001入门简介
 
@@ -559,7 +563,7 @@
                 打印“Game over”
                 停止背景音乐，最好淡出
 
-0. if分支语句：
+1. if分支语句：
     * 例子：按照100分制，90分以上成绩为A，80-90为B，60-80为C，60以下为D，设计程序，当输入分数，自动转换成等级打印。
     1. 全部if，消耗大
             
@@ -606,7 +610,7 @@
             else:
                 print('输入错误！')        
             
-1. **Python可以有效避免"悬挂else"**，因为其强制缩进原则，同一个缩进级别的else匹配其相同缩进级别的if语句    
+2. **Python可以有效避免"悬挂else"**，因为其强制缩进原则，同一个缩进级别的else匹配其相同缩进级别的if语句    
         
         if ( hi > 2 )    # 与下面的else配套
             if ( hi > 7 )   # 若要与下面else配套，需要将下面else缩进
@@ -614,7 +618,7 @@
         else:   # 这里的else会匹配同一缩进级别的if
             print("切~")            
 
-2. 条件表达式（三元运算符）
+3. 条件表达式（三元运算符）
         
         x,y = 4,5
         if x < y:
@@ -627,7 +631,7 @@
         x,y = 4,5
         small = x if x < y else y
 
-3. 断言（assert）
+4. 断言（assert）
     * 当assert 关键字后面的条件为假的时候，程序崩溃，并抛出AssertionError异常         
            
            >>> assert 3 > 4
@@ -638,7 +642,7 @@
     
     * 一般来说，我们可以用assert在程序中置入检查点，当需要确保程序的某个条件一定为真才能让程序正常运行的话，assert关键字就非常有用了。           
 
-4. 循环结构
+5. 循环结构
     * while循环：
             
             while 条件 :
@@ -670,4 +674,91 @@
                 C# 2
                 C 1     
 
-- [ ] 待办：p10   
+6. range()内置函数
+        
+        # 常常与for循环配合使用：
+        
+        help(range)
+        Help on class range in module builtins:
+        
+        class range(object)
+         |  range(stop) -> range object
+         |  range(start, stop[, step]) -> range object
+         |  
+         |  Return an object that produces a sequence of integers from start (inclusive)
+         |  to stop (exclusive) by step.  range(i, j) produces i, i+1, i+2, ..., j-1.
+         |  start defaults to 0, and stop is omitted!  range(4) produces 0, 1, 2, 3.
+         |  These are exactly the valid indices for a list of 4 elements.
+         |  When step is given, it specifies the increment (or decrement).
+
+    * 语法：range(start,stop[,step])-> range object
+        * 三个参数 ：
+        * start:默认为0，可以指定起始数值，start包含在结果内
+        * stop:不包括在结果内
+        * step:步长，可选参数
+        * 创建一个从start开始到stop结束的整数序列（range对象类型），stop不包含在内。
+                
+                >>> range(5)
+                range(0, 5)
+                
+                >>> list(range(5))
+                [0, 1, 2, 3, 4]
+           
+                >>> for i in range(5):     # 未指定start则默认从0开始
+                	print(i)
+                                
+                	
+                0
+                1
+                2
+                3
+                4
+                
+                >>> for i in range(2,9):    # 未指定步长，则从2开始按照步长1增加到 < 9 的所有数 
+                	print(i)
+                
+                	
+                2
+                3
+                4
+                5
+                6
+                7
+                8
+                
+                >>> for i in range(1,10,2):     # 设置了步长为2，从1按照步长一直到10，其中10不包括在内
+                	print(i)
+                
+                	
+                1
+                3
+                5
+                7
+                9
+                
+                >>> len(range(2,9))
+                7
+
+7. 两个重要的控制语句
+    * `break`：结束循环，终止当前循环，即跳出循环体
+            
+            bingo = 'Python'
+            answer = input('目前在学哪门语言：')
+            
+            while True:
+                if answer == bingo:
+                    break       # 上面条件满足的话，直接跳出当前循环体
+                answer = input('抱歉，错了，请重新输入（答案正确才能退出游戏）：')
+            
+            print('哟哟，不错哦！')
+            print('游戏结束')
+
+    * `continue`：终止本轮循环，并开启下一轮循环。注意在开启下一轮循环前会先判断循环条件是否为True，为True开启下一轮循环，否则退出当前循环体
+        
+            for i in range(10):
+                if i % 2 != 0:   # 判断被2整除余数不是0，即不是偶数时
+                    print(i)
+                    continue    # 结束当前循环，判断循环条件是否满足，满足的话开启下一轮循环
+                i += 2
+                print(i)
+                      
