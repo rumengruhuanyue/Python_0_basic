@@ -211,7 +211,8 @@
             # 条件为真时，执行的操作（前面加一个tab符缩进）
             
 * and 逻辑操作符，优先级小于 大于、小于 
-        
+* 引入模块：`import 模块`
+
         import random
         secret = random.randint(1,10)
         print(secret)
@@ -240,3 +241,123 @@
                         print('哥，小了！')
                 flag = flag + 1    
         print('游戏结束')
+        
+        -----------------------------
+                    更新：
+        -----------------------------
+        
+        import random
+        secret = random.randint(1,10)
+        # print(secret)
+        print("----------文字游戏升级--------------")
+        flag = 0
+        while flag < 3 :
+            temp = input('请猜测一个1-10间的数字:')
+            guess = int(temp)
+            if guess == secret :
+                print('猜对了！')
+                break # 如果猜对了，跳出循环
+            else:
+                if guess > secret :
+                    print('哥，大了大了！')
+                else :
+                    print('哥，小了！')
+            flag = flag + 1
+        print('游戏结束')
+
+## 004 数值类型
+
+### 学习笔记
+
+* 整型
+* 浮点型
+* 布尔型
+* e记法
+
+        >>> 150000
+        150000
+        >>> 1.5E5
+        150000.0
+        >>> 1.5e5
+        150000.0
+        >>> 0.000015
+        1.5e-05
+        >>> 1.5E-5
+        1.5e-05
+
+1. 类型转换：
+    * 转换成整数： int()
+    * 转换成字符串： str()
+    * 转换成浮点数： float()
+            
+            >>> a = '520'
+            >>> b = float(a)  # 数值字符串转浮点型
+            >>> b
+            520.0
+            >>> a = 520
+            >>> b = float(a)  # 整型转浮点型
+            >>> b
+            520.0
+            >>> a = 5.99
+            >>> b = int(a)   # 浮点型强制转换成int型，去尾法
+            >>> b
+            5
+            >>> b = int("学习Pyhon")    # 非数值型字符串无法转成整型
+            Traceback (most recent call last):
+              File "<pyshell#17>", line 1, in <module>
+                b = int("学习Pyhon")
+            ValueError: invalid literal for int() with base 10: '学习Pyhon'
+            >>> a = 5.99    
+            >>> b = str(a)      # 浮点型转成字符串
+            >>> b
+            '5.99'
+            >>> c = str(5e19)
+            >>> c
+            '5e+19'
+            >>> c = str(0.000015)
+            >>> c
+            '1.5e-05'        
+            >>> a = '5.99'      # 浮点型字符串转成浮点型
+            >>> b = float(a)
+            >>> b
+            5.99
+            >>> a = '5'         # 整型字符串转成浮点型
+            >>> b = float(a)
+            >>> b
+            5.0
+            b = float("学习Pyhon")        # 非数值型字符串无法转成浮点型
+            Traceback (most recent call last):
+              File "<pyshell#33>", line 1, in <module>
+                b = float("学习Pyhon")
+            ValueError: could not convert string to float: '学习Pyhon'
+
+2. 获取变量类型&&判断变量类型
+    * type()
+            
+            >>> a = 520
+            >>> type(a)
+            <class 'int'>
+            
+            >>> type(5.2)
+            <class 'float'>
+            
+            >>> type(True)
+            <class 'bool'>
+            >>> type(flase)
+            
+            >>> type(False)
+            <class 'bool'>
+            
+            >>> type(5e15)
+            <class 'float'>
+            
+            >>> type('520')
+            <class 'str'>
+    
+    * isinstance()
+            
+            >>> a = "学习Python"
+            >>> isinstance(a,str)
+            True
+            >>> isinstance(a,int)
+            False
