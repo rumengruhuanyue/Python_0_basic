@@ -954,7 +954,7 @@ Python的列表中可以存放各种类型的数据
              >>> member
              ['Python', 'C', 'Ruby', '520']
     
-5. 列表分片（slice）
+5. **列表分片（slice）**
     1. 得到列表的 一部分的 拷贝
             
             >>> member
@@ -996,11 +996,11 @@ Python的列表中可以存放各种类型的数据
             >>> member == member2
             False
     
-    2. 赋值与分片“拷贝”的区别
+    2. **赋值与分片“拷贝”的区别**
             
-            # 拷贝是创建了新的一份资源；
+        * **拷贝**是创建了新的一份资源；
             
-            # 赋值，是创建新的引用，指向了原来那份资源。
+        * **赋值**，是创建新的引用，指向了原来那份资源。
     
 6. 列表的一些常用操作符
     1. 比较操作符
@@ -1158,5 +1158,48 @@ Python的列表中可以存放各种类型的数据
                 list3.index(123, 1, 2)
             ValueError: 123 is not in list
 
-    3. 倒置 reverse BIF
-                
+    3. 列表倒置 reverse BIF
+    
+            =========================================================
+             |  reverse(self, /)
+             |      Reverse *IN PLACE*.   #【就地反转】
+            =========================================================
+            
+            >>> member = ['Python', 'Java', 'C', 'Ruby']
+            >>> member.reverse()
+            >>> member
+            ['Ruby', 'C', 'Java', 'Python']
+     
+    4. 排序: sort BIF   
+    
+            ====================================================================================
+             |  sort(self, /, *, key=None, reverse=False)
+             |      Sort the list in ascending order and return None.
+             |      
+             |      The sort is in-place (i.e. the list itself is modified) and stable (i.e. the
+             |      order of two equal elements is maintained).
+             |      
+             |      If a key function is given, apply it once to each list item and sort them,
+             |      ascending or descending, according to their function values.
+             |      
+             |      The reverse flag can be set to sort in descending order.
+             |  
+             |      【注释】in-place：就地
+            ====================================================================================               
+            
+            >>> list6 = [4, 2, 5, 1, 9, 23, 32, 0, 9]
+            
+            >>> list6.sort()            # 默认按照正序排列
+            >>> list6
+            [0, 1, 2, 4, 5, 9, 9, 23, 32]
+            
+            >>> list6.reverse()         # 若需要倒序，可以再调用一次reverse()方法
+            >>> list6
+            [32, 23, 9, 9, 5, 4, 2, 1, 0]
+            
+            
+            >>> list6 = [4, 2, 5, 1, 9, 23, 32, 0, 9]
+            >>> list6.sort(reverse=True)        # 或者，排序时指定倒序参数为True
+            >>> list6
+            [32, 23, 9, 9, 5, 4, 2, 1, 0]
+  
