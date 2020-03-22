@@ -43,7 +43,16 @@
     - 两个重要的控制语句
         - break
         - continue
-     
+    
+- [007列表-打了激素的数组](#007列表:打了激素的数组)   
+    * 创建列表
+    * 向列表中添加元素
+    * 从列表中获取元素
+    * 从列表删除元素 
+    * 列表分片（slice）
+    * 列表的一些常用操作符
+    * 列表类型(list)的BIF（内置函数）  
+    
     - **待办p10**
 ## 001入门简介
 
@@ -761,4 +770,393 @@
                     continue    # 结束当前循环，判断循环条件是否满足，满足的话开启下一轮循环
                 i += 2
                 print(i)
-                      
+                 
+## 007列表:打了激素的数组
+
+Python的列表中可以存放各种类型的数据
+
+### 学习笔记
+
+1. **创建列表**
+    1. 创建普通列表
+            
+            >>> member = ['Python','Java','php','C#','C']
+            >>> member
+            ['Python', 'Java', 'php', 'C#', 'C']
+            
+            >>> number = [1,2,3,4,5]
+            >>> number
+            [1, 2, 3, 4, 5]
+
+    2. 创建混合列表
+            
+            >>> mix = [1, 'Python', 3.14, [1, 2, 3]]
+            >>> mix
+            [1, 'Python', 3.14, [1, 2, 3]]
+                        
+    3. 创建空列表
+
+            >>> empty = []
+            >>> empty
+            []    
+           
+2. 向列表中**添加元素**
+    1. `.append()` 方法：只能添加一个对象进去
+            
+            ===================================================
+             |  append(self, object, /)
+             |      Append object to the end of the list.     
+            ===================================================
+
+            >>> member
+            ['Python', 'Java', 'php', 'C#', 'C']
+            
+            >>> member.append('Ruby')
+            >>> member
+            ['Python', 'Java', 'php', 'C#', 'C', 'Ruby']  
+             
+            >>> len(member)
+            6  
+            
+            >>> member.append('520','1314')         # append() 方法：只能添加一个对象进去
+            Traceback (most recent call last):
+              File "<pyshell#16>", line 1, in <module>
+                member.append('520','1314')
+            TypeError: append() takes exactly one argument (2 given)
+            
+    2. `.extend()`方法 :Extend list by appending elements from the iterable.
+    
+            ===================================================
+             |  extend(self, iterable, /)
+             |      Extend list by appending elements from the iterable.
+            ===================================================
+            
+            >>> member.extend('520','1314')         # extend方法扩展类别，参数只有一个,通过iterable
+            Traceback (most recent call last):
+              File "<pyshell#17>", line 1, in <module>
+                member.extend('520','1314')
+            TypeError: extend() takes exactly one argument (2 given)
+            
+            
+            >>> member.extend(['520','1314'])
+            >>> member
+            ['Python', 'Java', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+            
+    3. `.insert()`方法：
+            
+            ===================================================
+             |  insert(self, index, object, /)
+             |      Insert object before index.
+            =================================================== 
+            
+            >>> member.insert(1,'R')
+            >>> member
+            ['Python', 'R', 'Java', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+
+3. 从列表中**获取元素**
+    * 通过索引值（从0开始）获取元素
+            
+            >>> member      #  打印member列表
+            ['Python', 'R', 'Java', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+            
+            >>> member[0]       # 获取索引为0的元素
+            'Python'
+            
+            >>> member[2]       # 获取索引为2的元素
+            'Java'
+            
+            # 交换列表中索引0和2的元素
+            
+            >>> temp = member[0]
+            >>> member[0] = member[2]
+            >>> member[2] = temp
+            >>> member
+            ['Java', 'R', 'Python', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+
+4. 从列表**删除元素** 
+    1. `.remove()`：只会删除列表中出现的第一个元素，若列表中不存在这个元素抛出异常
+    
+             =================================================== 
+             class list(object)
+             
+             |  remove(self, value, /)
+             |      Remove first occurrence of value.
+             |      
+             |      Raises ValueError if the value is not present.
+             =================================================== 
+             
+             >>> member
+             ['Java', 'R', 'Python', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+             
+             >>> member.remove('R')     # 去除‘R’元素
+             
+             >>> member
+             ['Java', 'Python', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+             
+             ===================================================
+                   现在演示：只会删除出现的元素值一致的第一个元素
+             ===================================================
+             >>> member.insert(1,'R')
+             >>> member
+             ['Java', 'R', 'Python', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+             
+             >>> member.append('R')
+             >>> member
+             ['Java', 'R', 'Python', 'php', 'C#', 'C', 'Ruby', '520', '1314', 'R']
+             
+             >>> member.remove('R')     # 从结果，删除了下标为1的'R'，而下标为9的'R'还在列表中
+             >>> member
+             ['Java', 'Python', 'php', 'C#', 'C', 'Ruby', '520', '1314', 'R']
+            
+    2. `del`
+    
+            >>> member
+            ['Java', 'Python', 'php', 'C#', 'C', 'Ruby', '520', '1314', 'R']
+            
+            >>> del member[0]       # 删除下标为0的元素 
+            >>> member
+            ['Python', 'php', 'C#', 'C', 'Ruby', '520', '1314', 'R']
+            
+            >>> del member[-1]       # 删除下标为-1的元素，即列表最后一个元素 
+            >>> member
+            ['Python', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+    
+            若执行 del member 则整个列表将从内存中消失
+            
+    3. `.pop()`，默认从列表尾部弹出，若指定脚标，则按照脚标删除元素      
+
+             =====================================================================
+             class list(object)
+             
+              |  pop(self, index=-1, /)
+              |      Remove and return item at index (default last).
+              |      
+              |      Raises IndexError if list is empty or index is out of range.
+             ===================================================================== 
+             
+             >>> member
+             ['Python', 'php', 'C#', 'C', 'Ruby', '520', '1314']
+             
+             >>> name = member.pop()        # 默认从尾部弹出一个元素
+             >>> name
+             '1314'
+             >>> member
+             ['Python', 'php', 'C#', 'C', 'Ruby', '520']
+             
+             >>> lan = member.pop(1)         # 从列表中删除脚标为1的元素
+             >>> lan
+             'php'
+             >>> member
+             ['Python', 'C#', 'C', 'Ruby', '520']
+             
+             >>> member.pop(1)      # 再从列表中删除脚标位置为1的元素
+             'C#'
+             >>> member
+             ['Python', 'C', 'Ruby', '520']
+    
+5. 列表分片（slice）
+    1. 得到列表的 一部分的 拷贝
+            
+            >>> member
+            ['Python', 'C', 'Ruby', '520']
+            
+            >>> member[1:3]             # 获取从脚标 1-3 的拷贝但不包括脚标3
+            ['C', 'Ruby']
+            
+            >>> member
+            ['Python', 'C', 'Ruby', '520']
+            
+            >>> member[:3]              # 默认其实脚标为0
+            ['Python', 'C', 'Ruby']
+            
+            >>> member[1:]              # 默认一直到列表尾部
+            ['C', 'Ruby', '520']
+            
+            >>> member[:]               # 获取列表的一个拷贝（与原来一样但是是新的一份），与直接赋值'='（还是原来那一份） 是不同的。
+            ['Python', 'C', 'Ruby', '520']
+            
+            >>> member2 = member[:]
+            >>> member2
+            ['Python', 'C', 'Ruby', '520']
+            >>> member
+            ['Python', 'C', 'Ruby', '520']
+            
+            >>> member == member2
+            True
+            
+            >>> member2.pop()
+            '520'
+            
+            >>> member
+            ['Python', 'C', 'Ruby', '520']
+            >>> member2
+            
+            ['Python', 'C', 'Ruby']
+            
+            >>> member == member2
+            False
+    
+    2. 赋值与分片“拷贝”的区别
+            
+            # 拷贝是创建了新的一份资源；
+            
+            # 赋值，是创建新的引用，指向了原来那份资源。
+    
+6. 列表的一些常用操作符
+    1. 比较操作符
+            
+            # 从第一个元素开始比较
+            
+            >>> list1 = [123]
+            >>> list2 = [234]
+            >>> list1 > list2
+            False
+            >>> 
+            >>> list1 = [123,456]
+            >>> list2 = [234, 123]
+            >>> list1 > list2
+            False
+                             
+    2. 逻辑操作符   
+            
+            >>> list3 = [123, 456]
+            >>> (list1 < list2) and (list1 == list3)
+            True
+            >>> list1 < list2 and list1 == list3
+            True
+
+    3. 连接操作符
+            
+            ##  '+'号, 连接
+            
+            >>> list1,list2
+            ([123, 456], [234, 123])
+            
+            >>> list4 = list1 + list2       # 不建议这么用，使用extend扩展列表更规范
+            >>> list4
+            [123, 456, 234, 123]
+            
+            =========================================
+            # 加号不能实现直接添加新元素操作，∵  加号左右类型要一致
+            =========================================
+            
+            >>> list1 + '567'
+            Traceback (most recent call last):
+              File "<pyshell#88>", line 1, in <module>
+                list1 + '567'
+            TypeError: can only concatenate list (not "str") to list    
+            ####
+            # 报错：只能将list加到list上; 加号左右类型要一致
+            #### 想要加入一个元素，可以使用 `.insert()`,`.append()`方法
+                                  
+    4. 重复操作符
+            
+            ##  '* n'号, 重复n次
+            
+            >>> list3
+            [123, 456]
+            
+            >>> list3 *3
+            [123, 456, 123, 456, 123, 456]
+           
+            >>> list3
+            [123, 456]
+            
+            >>> list3 *= 3      # 将list3重复3次并赋值给list3
+            >>> list3
+            [123, 456, 123, 456, 123, 456]
+            
+            >>> list3 *= 5
+            >>> list3
+            [123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456]
+                             
+    5. 成员关系操作符
+            
+            >>> list3
+            [123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456]
+            
+            >>> 123 in list3
+            True
+            >>> 'Python' not in list3
+            True   
+            
+            =================================================================================
+                # in： 判断是否为列表的元素，要引入一层，看那一层是否有此元素，即只关注当前一层；
+                # 类似于：break/continue，循环控制语句，只关系到到当前循环。              
+            =================================================================================
+            
+            >>> list5 = [123, ['Python','Java'], 456]
+            
+            >>> 'Python' in list5           # list5的元素有三个，第二个元素是列表，这一层不包含'Python'字符串
+            False
+            >>> 'Python' in list5[1]        # list5第二个元素为列表，在这一层中包含'Python'字符串
+            True
+            >>> list5[1][1]
+            'Java'
+                            
+7. 列表类型(list)的BIF（内置函数）    
+    * 查看list类型的BIF   
+    
+            >>> dir(list)
+            ['__add__', '__class__', '__contains__', '__delattr__', '__delitem__',
+            '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', 
+            '__getitem__', '__gt__', '__hash__', '__iadd__', '__imul__', '__init__', 
+            '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mul__', 
+            '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__',
+            '__rmul__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 
+            'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 
+            'reverse', 'sort']    
+         
+            >>> help(list)
+            Help on class list in module builtins:
+            class list(object) 
+             | ### list的BIF ###
+             | ### list的BIF ###
+            
+    1. count BIF - 返回元素在列表中的个数           
+        
+            =========================================================
+            class list(object) 
+        
+            |  count(self, value, /)
+            |      Return number of occurrences of value.   
+            ========================================================= 
+        
+            # count 方法示例
+            >>> list3
+            [123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456]
+            >>> list3.count(123)
+            15
+    
+    2. index BIF - 返回元素脚标
+    
+            =========================================================
+            |  index(self, value, start=0, stop=9223372036854775807, /)
+            |      Return first index of value.
+            |      
+            |      Raises ValueError if the value is not present.
+            =========================================================
+        
+            # index BIF ： 返回第一个出现的脚标，默认从列表开始(0脚标)到列表结束，直到找到第一个出现此元素的位置
+        
+            >>> list3
+            [123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456, 123, 456]
+        
+            >>> list3.index(123)
+            0
+        
+            # index 第2,3个参数，是用来指定范围的，在 start-> stop 脚标范围，但不包括stop脚标
+            >>> list3.index(123, 3, 7)
+            4
+        
+            >>> list3.index(123, 0, 1)
+            0
+        
+            >>> list3.index(123, 1, 2)
+            Traceback (most recent call last):
+            File "<pyshell#113>", line 1, in <module>
+                list3.index(123, 1, 2)
+            ValueError: 123 is not in list
+
+    3. 倒置 reverse BIF
+                
