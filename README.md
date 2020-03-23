@@ -59,8 +59,22 @@
     - 成员操作符
     - 关系操作符
     - 逻辑操作符
-   
-- [ ] **待办p15**：字符串BIF
+- **[009序列](#009序列)**   
+    1. **列表、元组和字符串的共同点**
+    2. `list()`把一个可迭代对象转化为列表
+    3. `tuple()`把一个可迭代对象转化为元组 
+    4. `str()`把obj对象转换为字符串   
+    5. `len()` —— 返回序列的长度（元素个数） 
+    6. `max()`、`min()` —— 返回序列或者参数中最大值、最小值   
+    7. `sum(iterable[,start=0])` —— 返回序列iterable和可选参数start的总和
+    8. `sorted()` —— 序列排序，返回值为list类型 
+    9. `reversed()` —— 倒置，返回一个迭代器对象
+    10. `enumerate(iterable, start=0)` —— 返回enumerate object
+    11. `zip()` —— 从0脚标开始，将两个序列成对打包成元组
+ 
+- [ ] **待办p15**：字符串BIF、源码方法学习帮助文档
+- [ ] **待办p17**：函数
+
 ---
 
 ## 001入门简介
@@ -1375,3 +1389,394 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
     4. 成员操作符： `in / not in` ，与列表list类似
     5. 关系操作符： `> / < / <= / >= / ==` ，与列表list类似
     6. 逻辑操作符： `and / or / not`，与列表list类似
+
+## 009序列    
+
+列表、元组、和字符串有很多共同点。他们统称序列。
+
+### 学习笔记
+
+1. 列表、元组和字符串的共同点
+    1. 都可以使用索引得到每一个元素；
+    2. 默认索引值从0开始；
+    3. 可以通过分片的方法得到一个范围内的元素的集合
+    4. 有很多共同的操作符
+        * 重复操作符 `*`
+        * 拼接操作符 `+`
+        * 成员关系操作符 `in`、`not in`
+2. `list()`把一个可迭代对象转化为列表
+        
+        =======================================================================
+        
+        >>> help(list)
+        Help on class list in module builtins:
+        
+        class list(object)
+         |  list(iterable=(), /)
+         |  
+         |  Built-in mutable sequence.   # 内置可变序列
+         |  
+         |  If no argument is given, the constructor creates a new empty list.
+         |  The argument must be an iterable if specified.    # 若不提供参数，创建空list；若有参数，必须是可迭代的
+         
+        =======================================================================
+         
+             # 1. list([iterable])————把一个可迭代对象转换为列表
+         
+        =======================================================================
+         
+        >>> a = list()
+        >>> a
+        []
+        >>> b = 'I love Python'
+        >>> b = list(b)
+        >>> b
+        ['I', ' ', 'l', 'o', 'v', 'e', ' ', 'P', 'y', 't', 'h', 'o', 'n']
+        >>> c = (1,1,2,3,5,8,13,21,34)
+        >>> c = list(c)
+        >>> c
+        [1, 1, 2, 3, 5, 8, 13, 21, 34]
+                 
+        =======================================================================
+         
+3. `tuple()`把一个可迭代对象转化为元组     
+        
+        =======================================================================         
+        >>> help(tuple)
+        Help on class tuple in module builtins:
+         
+        class tuple(object)
+         |  tuple(iterable=(), /)
+         |  
+         |  Built-in immutable sequence.
+         |  
+         |  If no argument is given, the constructor returns an empty tuple.
+         |  If iterable is specified the tuple is initialized from iterable's items.
+         |  
+         |  If the argument is a tuple, the return value is the same object.
+         
+        =======================================================================
+         
+           # 2. tuple([iterable])————把一个可迭代对象转换为元组
+         
+        =======================================================================
+         
+4. `str()`把obj对象转换为字符串    
+        
+        >>> str(123)    # int ——> str
+        '123'
+        
+        >>> a = 123     # int ——> str
+        >>> b = str(a)
+        >>> b
+        '123'
+        
+        >>> a = 3.14    # float ——> str
+        >>> b =str(a)
+        >>> b
+        '3.14'
+        
+        >>> a = 'Python'    # str ——> str
+        >>> b = str(a)
+        >>> b
+        'Python'
+        
+        >>> a = [1,2,3,'Python']    # list ——> str
+        >>> b = str(a)
+        >>> b
+        "[1, 2, 3, 'Python']"
+        
+        >>> a = 1,2,3,4         # tuple ——> str
+        >>> b = str(a)
+        >>> b
+        '(1, 2, 3, 4)'
+
+5. `len()` —— 返回序列的长度（元素个数） 
+        
+        >>> a = []
+        >>> b = 'I love Python'
+        >>> b = list(b)
+        >>> b
+        ['I', ' ', 'l', 'o', 'v', 'e', ' ', 'P', 'y', 't', 'h', 'o', 'n']
+        >>> len(a)
+        0
+        >>> len(b)
+        13
+        
+6. `max()`、`min()` —— 返回序列或者参数中最大值、最小值    
+    
+    【注意】需要注意使用 `max()`、`min()`需要保证序列或者参数的类型统一的
+        
+        >>> max(1,2,3,4,5)
+        5
+        
+        >>> b = 'I love Python'
+        >>> b = list(b)
+        >>> b
+        ['I', ' ', 'l', 'o', 'v', 'e', ' ', 'P', 'y', 't', 'h', 'o', 'n']     
+             
+        >>> max(b)
+        'y'
+        
+        >>> members = [1,18,13,0,-98,34,54,76,32]
+        >>> max(members)
+        76
+        >>> min(members)
+        -98
+        
+        >>> a = 5,9,23,45,11,5,6
+        >>> a
+        (5, 9, 23, 45, 11, 5, 6)
+        >>> max(a)
+        45
+        >>> min(a)
+        5
+        
+        >>> a = 'I love Python'
+        >>> max(a)
+        'y'
+        >>> min(a)
+        ' '
+        
+        ==================================================================
+        【注意】需要注意使用 `max()`、`min()`需要保证序列或者参数的类型统一的
+               
+                max = tuplt[0]
+                for each in tuple:
+                    max = each if each > max else max
+                return max 
+        ==================================================================
+        
+        >>> members
+        [1, 18, 13, 0, -98, 34, 54, 76, 32]
+        >>> members.append('Python')
+        >>> members
+        [1, 18, 13, 0, -98, 34, 54, 76, 32, 'Python']       # list内部类型不一致，调用max/min方法报错
+        
+        >>> max(members)
+        Traceback (most recent call last):
+          File "<pyshell#41>", line 1, in <module>
+            max(members)
+        TypeError: '>' not supported between instances of 'str' and 'int'
+
+7. `sum(iterable[,start=0])` —— 返回序列iterable和可选参数start的总和
+    
+    【注意】需要确保序列各元素为数值类型才可
+        
+        ================================================================================
+        >>> help(sum)
+        Help on built-in function sum in module builtins:
+        
+        sum(iterable, /, start=0)
+            Return the sum of a 'start' value (default: 0) plus an iterable of numbers
+            
+            When the iterable is empty, return the start value.
+            This function is intended specifically for use with numeric values and may
+            reject non-numeric types.
+        ================================================================================    
+        
+        >>> tuple2 = (3.1, 2.3, 3.4)
+        >>> sum(tuple2)
+        8.8
+        
+        ==================================================================
+          【注意】需要确保序列各元素为数值类型才可
+        ==================================================================
+        
+        >>> members
+        [1, 18, 13, 0, -98, 34, 54, 76, 32, 'Python']
+        
+        >>> sum(members)        # list中类型不一不能求和
+        Traceback (most recent call last):
+          File "<pyshell#48>", line 1, in <module>
+            sum(members)
+        TypeError: unsupported operand type(s) for +: 'int' and 'str'
+       
+        >>> members.pop()
+        'Python'
+        >>> sum(members)
+        130
+        
+        >>> lans = ['Java','Python','Ruby']
+        >>> sum(lans)
+        Traceback (most recent call last):
+          File "<pyshell#52>", line 1, in <module>
+            sum(lans)
+        TypeError: unsupported operand type(s) for +: 'int' and 'str'
+        
+        =========================================
+           ## 默认start=0  让0与个元素相加
+           >>> a = []
+           >>> a
+           []
+           >>> sum(a)
+           0
+        =========================================
+        
+        >>> a = '13213213'
+        >>> sum(a)
+        Traceback (most recent call last):
+          File "<pyshell#54>", line 1, in <module>
+            sum(a)
+        TypeError: unsupported operand type(s) for +: 'int' and 'str'
+        
+8. `sorted()` —— 序列排序，返回值为list类型      
+        
+     【注意】需要保证元素类型一致
+        
+        ===================================================================================
+        >>> help(sorted)
+        Help on built-in function sorted in module builtins:
+        
+        sorted(iterable, /, *, key=None, reverse=False)
+            Return a new list containing all items from the iterable in ascending order.
+            
+            A custom key function can be supplied to customize the sort order, and the
+            reverse flag can be set to request the result in descending order.
+        ===================================================================================
+        
+        >>> members
+        [1, 18, 13, 0, -98, 34, 54, 76, 32]
+        >>> sorted(members)
+        [-98, 0, 1, 13, 18, 32, 34, 54, 76]  
+        
+        >>> sorted(members,reverse=True)
+        [76, 54, 34, 32, 18, 13, 1, 0, -98]
+        
+        >>> a = 'asdfg'              ————————————————————————————————
+        >>> sorted(a)                # 对字符串各元素排序，返回list类型
+        ['a', 'd', 'f', 'g', 's']    ————————————————————————————————
+        
+        >>> sorted(a,reverse=True)
+        ['s', 'g', 'f', 'd', 'a']
+        
+        ========================================
+            【注意】需要保证元素类型一致
+        ========================================
+        
+        >>> members.append('Python')
+        >>> members
+        [1, 18, 13, 0, -98, 34, 54, 76, 32, 'Python']
+        >>> 
+        >>> sorted(members)
+        Traceback (most recent call last):
+          File "<pyshell#67>", line 1, in <module>
+            sorted(members)
+        TypeError: '<' not supported between instances of 'str' and 'int'
+        
+                                    ————————————————————————————————
+        >>> sorted(lans)            # list内元素全部是str型，可以排序
+        ['Java', 'Python', 'Ruby']  ————————————————————————————————
+        
+9. `reversed()` —— 倒置，返回一个迭代器对象
+        
+        >>> members                 # list倒置
+        [1, 18, 13, 0, -98, 34, 54, 76, 32, 'Python']
+        >>> reversed(members)
+        <list_reverseiterator object at 0x000000000341FFA0>
+        
+        >>> list(reversed(members))
+        ['Python', 32, 76, 54, 34, -98, 0, 13, 18, 1]    
+        
+        >>> a = 'Python'            # 字符串倒置
+        >>> reversed(a)
+        <reversed object at 0x000000000341FFA0>
+        >>> str(reversed(a))
+        '<reversed object at 0x00000000034517F0>'
+        >>> tuple(reversed(a))
+        ('n', 'o', 'h', 't', 'y', 'P')
+        
+10. `enumerate(iterable, start=0)` —— 返回enumerate object
+        
+        ===================================================================================
+        >>> help(enumerate)
+        Help on class enumerate in module builtins:
+        
+        class enumerate(object)
+         |  enumerate(iterable, start=0)
+         |  
+         |  Return an enumerate object.
+         |  
+         |    iterable
+         |      an object supporting iteration
+         |  
+         |  The enumerate object yields pairs containing a count (from start, which
+         |  defaults to zero) and a value yielded by the iterable argument.
+         |  
+         |  enumerate is useful for obtaining an indexed list:
+         |      (0, seq[0]), (1, seq[1]), (2, seq[2]), ...
+         |  
+         |  Methods defined here:
+         |  
+         |  __getattribute__(self, name, /)
+         |      Return getattr(self, name).
+         |  
+         |  __iter__(self, /)
+         |      Implement iter(self).
+         |  
+         |  __next__(self, /)
+         |      Implement next(self).
+         |  
+         |  __reduce__(...)
+         |      Return state information for pickling.
+         |  
+         |  ----------------------------------------------------------------------
+         |  Static methods defined here:
+         |  
+         |  __new__(*args, **kwargs) from builtins.type
+         |      Create and return a new object.  See help(type) for accurate signature.
+
+        ===================================================================================
+        
+        >>> members
+        [1, 18, 13, 0, -98, 34, 54, 76, 32, 'Python']
+        
+        >>> enumerate(members)
+        <enumerate object at 0x00000000027D0480>
+        
+        >>> list(enumerate(members))
+        [(0, 1), (1, 18), (2, 13), (3, 0), (4, -98), (5, 34), (6, 54), (7, 76), (8, 32), (9, 'Python')]
+        
+11. `zip()` —— 从0脚标开始，将两个序列成对打包成元组
+        
+        ===================================================================================
+        >>> help(zip)
+        Help on class zip in module builtins:
+        
+        class zip(object)
+         |  zip(*iterables) --> zip object
+         |  
+         |  Return a zip object whose .__next__() method returns a tuple where
+         |  the i-th element comes from the i-th iterable argument.  The .__next__()
+         |  method continues until the shortest iterable in the argument sequence
+         |  is exhausted and then it raises StopIteration.
+         |  
+         |  Methods defined here:
+         |  
+         |  __getattribute__(self, name, /)
+         |      Return getattr(self, name).
+         |  
+         |  __iter__(self, /)
+         |      Implement iter(self).
+         |  
+         |  __next__(self, /)
+         |      Implement next(self).
+         |  
+         |  __reduce__(...)
+         |      Return state information for pickling.
+         |  
+         |  ----------------------------------------------------------------------
+         |  Static methods defined here:
+         |  
+         |  __new__(*args, **kwargs) from builtins.type
+         |      Create and return a new object.  See help(type) for accurate signature.        
+        ===================================================================================
+        
+        >>> a = [1,2,3,4,5,6,7,8,]
+        >>> b = [4,5,6,7,8]
+        >>> zip(a,b)
+        <zip object at 0x00000000034260C0>
+        >>> list(zip(a,b))
+        [(1, 4), (2, 5), (3, 6), (4, 7), (5, 8)]
+        
+             
