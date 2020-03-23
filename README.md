@@ -1014,16 +1014,50 @@ Python的列表中可以存放各种类型的数据
 6. 列表的一些常用操作符
     1. 比较操作符
             
-            # 从第一个元素开始比较
+            ====================================================================
+              ### 1. 从第一个元素开始比较
+              ### 2. 同型才能够比较
+              ### ### 2.1 比如两个list第一个元素类型不同，则无法比，报错，类型错误
+              ### ### 2.2 依次进行，从脚标0元素开始比较
+            ====================================================================
             
             >>> list1 = [123]
             >>> list2 = [234]
             >>> list1 > list2
             False
             >>> 
-            >>> list1 = [123,456]
+            >>> list1 = [123, 456]  # 从第一个元素开始，第一个元素不同，从第一个元素就比较出了结果;否则继续依次往下比较
             >>> list2 = [234, 123]
             >>> list1 > list2
+            False
+            
+            >>> list1 = []          # 空列表小于其他列表
+            >>> list2 = [123]
+            >>> list1 < list2
+            True
+            
+            >>> list1=['asd']
+            >>> list1<list2         # list1第一个元素str型，list2第一个元素int型，无法比较，报错。
+            Traceback (most recent call last):
+              File "<pyshell#4>", line 1, in <module>
+                list1<list2
+            TypeError: '<' not supported between instances of 'str' and 'int'
+            
+            >>> list1 = [[123]]     # 两个list都只有一个元素，第一个元素都为list类型可以比较
+            >>> list2= [[234]]
+            >>> list1<list2
+            True
+            
+            >>> list1 = [456,[123]]     # list1第一个元素int型，list2第一个元素list型，无法比较，报错。
+            >>> list1<list2
+            Traceback (most recent call last):
+              File "<pyshell#10>", line 1, in <module>
+                list1<list2
+            TypeError: '<' not supported between instances of 'int' and 'list'
+            
+            >>> list1 = ['Python']      # 两个list都只有一个元素，第一个元素都为str类型可以比较.
+            >>> list2 = ['Java']
+            >>> list1<list2
             False
                              
     2. 逻辑操作符   
