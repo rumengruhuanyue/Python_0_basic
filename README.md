@@ -1928,3 +1928,64 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
 
             
         =====================================================================
+        
+6. 函数与过程
+    * 函数（function），有返回值；
+    * 过程（procedure），时简单、特殊并且没有返回值的。 
+    
+        `Python严格来说，只有函数没有过程。`
+            
+            >>> def hello():
+            	print('Hello World')
+            
+            	
+            >>> temp = hello()
+            Hello World
+            >>> temp                # 由于hello函数没有设置return返回语句，temp命令并不会有什么内容输出
+            >>> type(temp)          # 但是当判断他的类型，是NoneType类型。并不是什么东西也没有返回回来。
+            <class 'NoneType'>      # Python的所有函数都会返回某些东西的，有返回值返回其值，没有返回None对象
+    
+            
+            ===========================================
+                返回多个值
+            ===========================================
+            
+            >>> def back():
+            	return [1, 'Python', 3.14]      # 把返回数据打包成 list，返回。
+            
+            >>> back()
+            [1, 'Python', 3.14]
+            
+            >>> def back():
+            	return 1, 'Python', 3.14        # 把返回数据打包成元组，返回。
+            
+            >>> back()
+            (1, 'Python', 3.14)
+            
+7. 局部变量和全局变量
+    * 在函数内可以访问全局变量，但不要试图去修改它。关于全局变量的使用一定要谨慎！    
+    * 在函数内试图修改全局变量的话，Python会在函数内创建一个同名局部变量，他们两个变量没在一个区中。  
+    * 作用域。
+        
+            def discount(price, rate):
+                final_price = price * rate
+                # print('这里试图打印全局变量old_price的值：', old_price)
+                old_price = 50                          ### 函数内试图修改全局变量
+                print('修改后old_price的值1：', old_price)
+                return final_price
+            
+            
+            old_price = float(input('请输入原价：'))         ### 全局变量
+            rate = float(input('请输入折扣率：'))
+            new_price = discount(old_price, rate)           ### 调用函数
+            print('修改后old_price的值2：', old_price)      ### 表明试图修改全局变量失败
+            print('打折后的价格是：', new_price)
+                    
+                    
+                    
+            请输入原价：100
+            请输入折扣率：0.8
+            修改后old_price的值1： 50
+            修改后old_price的值2： 100.0
+            打折后的价格是： 80.0
+       
