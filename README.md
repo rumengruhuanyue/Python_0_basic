@@ -1963,9 +1963,9 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             (1, 'Python', 3.14)
             
 7. 局部变量和全局变量
-    * 在函数内可以访问全局变量，但不要试图去修改它。关于全局变量的使用一定要谨慎！    
-    * 在函数内试图修改全局变量的话，Python会在函数内创建一个同名局部变量，他们两个变量没在一个区中。  
-    * 作用域。
+    1. 在函数内可以访问全局变量，但不要试图去修改它。关于全局变量的使用一定要谨慎！    
+    2. 在函数内试图修改全局变量的话，Python会在函数内创建一个同名局部变量(起到了对修改全局变量的屏蔽作用)，他们两个变量没在一个区中。  
+    3. 作用域。
         
             def discount(price, rate):
                 final_price = price * rate
@@ -1988,4 +1988,27 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             修改后old_price的值1： 50
             修改后old_price的值2： 100.0
             打折后的价格是： 80.0
-       
+    
+    4. 如果函数内需要修改全局变量的值，需要用到`global` 关键字 
+            
+            >>> count = 5
+            >>> def MyFun():
+            	count = 10
+            	print(count)
+            
+            	
+            >>> MyFun()
+            10
+            >>> print(count)
+            5
+            
+            >>> def MyFun():
+            	global count
+            	count = 10
+            	print(count)
+            
+            	
+            >>> MyFun()
+            10
+            >>> print(count)
+            10
