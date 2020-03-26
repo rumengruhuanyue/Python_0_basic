@@ -71,7 +71,7 @@
     9. `reversed()` —— 倒置，返回一个迭代器对象
     10. `enumerate(iterable, start=0)` —— 返回enumerate object
     11. `zip()` —— 从0脚标开始，将两个序列成对打包成元组
- 
+- **[010函数:Python的乐高积木](#010函数)**
 - [ ] **待办p15**：字符串BIF、源码方法学习帮助文档
 - [ ] **待办p17**：函数
 
@@ -1779,4 +1779,152 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
         >>> list(zip(a,b))
         [(1, 4), (2, 5), (3, 6), (4, 7), (5, 8)]
         
-             
+## 010函数             
+
+### 学习笔记
+
+1. 函数的定义与调用
+        
+        >>> def MyFirstFunction():              # 定义函数
+        	print('这是我创建的第一个函数')
+        	print('我表示很激动！')
+        
+        
+        >>> MyFirstFunction()               # 函数调用
+        这是我创建的第一个函数
+        我表示很激动！
+        >>> 
+        
+        >>> def MySecondFunction(name):     # 带参数的函数，调用时必须要传入参数
+        	print('我爱' + name + '!')
+        
+        	
+        >>> MySecondFunction('你')
+        我爱你!
+        
+        
+        >>> def add(num1,num2):     # 带参数的函数，调用时必须要传入参数
+        	result = num1 + num2
+        	print(result)
+        
+        	
+        >>> add(1, 2)
+        3
+        
+        >>> def add(num1, num2):    # 定义带返回值的函数
+        	return (num1 + num2)        # 这里的小括号可以不要
+        
+        >>> addresult = add(5,6)
+        >>> addresult
+        11
+        >>> type(addresult)
+        <class 'int'>
+        >>> print(add(5, 6))
+        11
+        
+2. 形参与实参
+    
+    * 形参：函数定义时定义的需要传入的参数。
+    * 实参：调用函数实际实际传入的参数。
+
+3. 关键字参数
+        
+        >>> def SaySome(name, words):
+        	print(name + '->' + words)
+        
+        	
+        >>> SaySome('鲁迅','世上本无路')
+        鲁迅->世上本无路
+        >>> SaySome('世上本无路','鲁迅')
+        世上本无路->鲁迅
+        >>> SaySome(words = '世上本无路',name = '鲁迅')       # 关键字参数 
+        鲁迅->世上本无路
+        >>>         
+        
+4. 默认参数（定义可默认值的参数）
+        
+        >>> def SaySome(name = '鲁迅',words = '世上本无路'):   # 定义了参数的默认值
+        	print(name + '->' + words)
+        
+        	
+        >>> SaySome()
+        鲁迅->世上本无路
+        >>> SaySome('苏轼','宁可食无肉，不可使门前无竹！')
+        苏轼->宁可食无肉，不可使门前无竹！
+
+5. 收集参数  
+        
+        >>> def test(*params):
+        	print('参数的长度是：',len(params))
+        	print('第二个参数是：',params[1])
+            print(type(params))
+        	
+        >>> test(1, 'Python', 3.14, 5, 6, 7, 8)
+        参数的长度是： 7
+        第二个参数是： Python                    ——————————————————————————————
+        <class 'tuple'>                         # 可以看出程序用元组收纳收集参数
+                                                ——————————————————————————————
+        =====================================================================
+         如果收集参数的后边还要加上其他的定制参数，需要采用关键字参数的形式来定制；  
+         ———————————————————————————————————————————————————————————————————
+         如果不这样的话，会默认为所有参数都给了收集参数纳入元组了。      
+        =====================================================================
+        
+        >>> def test(*params, exp):
+        	print('参数的长度是：',len(params))
+        	print('第二个参数是：',params[1])
+        	print('收集参数后面定制的参数：', exp)
+        
+        	
+        >>> test(1, 'Python', 3.14, 5, 6, 7, 8)
+        Traceback (most recent call last):
+          File "<pyshell#61>", line 1, in <module>
+            test(1, 'Python', 3.14, 5, 6, 7, 8)
+        TypeError: test() missing 1 required keyword-only argument: 'exp'
+        >>> test(1, 'Python', 3.14, 5, 6, 7, 8, exp = 2020)
+        参数的长度是： 7
+        第二个参数是： Python
+        收集参数后面定制的参数： 2020
+ 
+        =====================================================================
+         建议：收集参数后面还有定制的其他参数的话，使用默认参数形式赋予默认初值  
+        =====================================================================      
+       
+        >>> def test(*params, exp = 2020):
+        	print('参数的长度是：',len(params))
+        	print('第二个参数是：',params[1])
+        	print('收集参数后面定制的参数：', exp)
+        
+        	
+        >>> test(1, 'Python', 3.14, 5, 6, 7, 8)
+        参数的长度是： 7
+        第二个参数是： Python
+        收集参数后面定制的参数： 2020
+        
+        ===================================================================== 
+       
+        ##  可以查看、学习、理解print源码  ##   
+        ## ## IDLE->Help->PythonDocs   
+        
+        print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)
+            Print objects to the text stream file, separated by sep and followed by end. 
+            sep, end, file and flush, if present, must be given as keyword arguments.
+      
+            All non-keyword arguments are converted to strings like str() does and written 
+            to the stream, separated by sep and followed by end. Both sep and end must be 
+            strings; they can also be None, which means to use the default values. If no objects
+             are given, print() will just write end.
+        
+            The file argument must be an object with a write(string) method; if it is
+            not present or None, sys.stdout will be used. Since printed arguments are 
+            converted to text strings, print() cannot be used with binary mode file objects.
+            For these, use file.write(...) instead.
+        
+            Whether output is buffered is usually determined by file, but if the flush keyword 
+            argument is true, the stream is forcibly flushed.
+       
+        
+            Changed in version 3.3: Added the flush keyword argument.
+
+            
+        =====================================================================
