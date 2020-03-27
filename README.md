@@ -86,9 +86,15 @@
     8. 内嵌函数
     9. **闭包**
         * 内嵌函数中，闭包原则本不可以修改外部作用域，Python3新加 `nonlocal` 关键字
-
+    10. **lambda表达式**
+    	1. Python允许使用`lambda`关键字来创建**匿名函数**.
+    	2. lambda表达式的作用
+    11. 介绍两个BIF-filter/map（应用lambda）
+    	1. **`filter()`** —— filter(function or None, iterable) --> filter object
+    	2. **`map`** —— map(func, *iterables) --> map object
+    	
 - [ ] **待办p15**：字符串BIF、源码方法学习帮助文档
-- [ ] **待办p22**：lambda表达式、递归函数
+- [ ] **待办p22**：递归函数
 
 ---
 
@@ -2162,5 +2168,139 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             
             >>> Fun1()
             25
-           
-                      
+
+10. lambda表达式
+    1. Python允许使用`lambda`关键字来创建**匿名函数**.
+            
+            ========================================================
+            
+            基本语法：
+            lambda 原函数的参数 : 原函数的返回值        
+            
+            构造的结果：返回一个没有名字的function<lambda>对象    
+            
+            ========================================================
+            
+            >>> def ds(x):
+            	return 2 * x + 1
+            
+            >>> ds(5)
+            11
+            
+            >>> lambda x : 2 * x + 1            # 上述函数改为lambda表达式就一行搞定
+            <function <lambda> at 0x00000269DABF1280>
+            
+            >>> g = lambda x : 2 * x + 1        # lambda表达式赋值给变量，即可调用
+            >>> g(5)
+            11
+         
+            >>> def add(x,y):
+            	return x + y
+            
+            >>> add(3, 4)
+            7
+            >>> g = lambda x, y : x + y          # 上述函数改为lambda表达式就一行搞定
+            >>> g(3, 4)
+            7      
+
+    2. lambda表达式的作用
+        * Python写一些执行脚本时，使用lambda就可以省下定义函数过程，比如说我们只是需要写个简单的脚本来管理服务器时间，我们就**不需要专门定义一个函数然后再写调用，使用lambda就可以使得代码更加精简**。
+        * 对于一些比较抽象并且整个程序执行下来**只需要调用一两次的函数，有时候给函数起个名字也是比较头疼的问题**，使用lambda就不需要考虑命名的问题了。
+        * 简化代码的可读性，由于普通的函数阅读经常要调到开头的def定义部分，使用lambda函数可以省去这样的步骤。
+       
+11. 介绍两个BIF-filter/map
+    1. **`filter()`** —— filter(function or None, iterable) --> filter object
+            
+            ==================================================================================
+            >>> help(filter)
+            Help on class filter in module builtins:
+            
+            class filter(object)
+             |  filter(function or None, iterable) --> filter object
+             |  
+             |  Return an iterator yielding those items of iterable for which function(item)
+             |  is true. If function is None, return the items that are true.
+             |  
+             |  Methods defined here:
+             |  
+             |  __getattribute__(self, name, /)
+             |      Return getattr(self, name).
+             |  
+             |  __iter__(self, /)
+             |      Implement iter(self).
+             |  
+             |  __next__(self, /)
+             |      Implement next(self).
+             |  
+             |  __reduce__(...)
+             |      Return state information for pickling.
+             |  
+             |  ----------------------------------------------------------------------
+             |  Static methods defined here:
+             |  
+             |  __new__(*args, **kwargs) from builtins.type
+             |      Create and return a new object.  See help(type) for accurate signature.
+            ============================================================================================================                         
+            【注释】
+            ** 参数：1个函数，1个可迭代的序列
+            ** 功能：将迭代的每一个元素作为参数在定义的function中运算，直到所有元素处理完，返回结果为True的元素的新序列。
+            即，返回一个迭代器，迭代器中的各个元素满足function表达式为True。若function为None，则返回那些本身为True的元素。
+            ============================================================================================================
+            
+            >>> filter(None, [1, 0, False, True, 'Python'])     # function为None，直接输出迭代器中非假元素        
+            <filter object at 0x000001E1FC7967C0>               # 达到过滤False元素的效果
+            
+            >>> list(filter(None, [1, 0, False, True, 'Python']))
+            [1, True, 'Python']   
+            
+            =============================================
+            ## 奇数的过滤器
+            =============================================
+            >>> def odd(x):                
+            	return x % 2
+            
+            >>> temp = range(10)                                # range(10) ——> 0-9
+            >>> show = filter(odd, temp)
+            >>> list(show)
+            [1, 3, 5, 7, 9]
+         
+            >>> list(filter(lambda x : x % 2 ,range(10)))       # 使用lambda一行搞定
+            [1, 3, 5, 7, 9]
+    
+    2. **`map`** —— map(func, *iterables) --> map object
+            
+            ==================================================================================
+            >>> help(map)
+            Help on class map in module builtins:
+            
+            class map(object)
+             |  map(func, *iterables) --> map object
+             |  
+             |  Make an iterator that computes the function using arguments from
+             |  each of the iterables.  Stops when the shortest iterable is exhausted.
+             |  
+             |  Methods defined here:
+             |  
+             |  __getattribute__(self, name, /)
+             |      Return getattr(self, name).
+             |  
+             |  __iter__(self, /)
+             |      Implement iter(self).
+             |  
+             |  __next__(self, /)
+             |      Implement next(self).
+             |  
+             |  __reduce__(...)
+             |      Return state information for pickling.
+             |  
+             |  ----------------------------------------------------------------------
+             |  Static methods defined here:
+             |  
+             |  __new__(*args, **kwargs) from builtins.type
+             |      Create and return a new object.  See help(type) for accurate signature.
+            ==================================================================================
+            >>> list(map(lambda x : x * 2, range(10)))
+            [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+            
+            迭代元素作为参数在表达式中运行，处理后的结果，返回，组成一个序列。
+                         
