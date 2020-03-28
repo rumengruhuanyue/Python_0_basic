@@ -92,9 +92,35 @@
     11. 介绍两个BIF-filter/map（应用lambda）
     	1. **`filter()`** —— filter(function or None, iterable) --> filter object
     	2. **`map`** —— map(func, *iterables) --> map object
-    	
+- **[011递归](#011递归)**    
+    1. 递归易产生深度溢出
+    2. 获取 & 设置递归深度  
+    	1. 获取递归深度 
+    	2. 设置递归深度 
+    3. 实例：递归求阶乘
+    	1. 常规解法（迭代）
+    	2. 递归解法 
+    4. 递归的要求
+        * 调用函数自身
+        * 设置了自身正确的返回值，以及达到条件不再调用自身
+    5. 递归的实质
+    6. 阶乘实际上没必要使用递归来计算。
+    	* 当计算一个比较大的数值的阶乘的时候，会出现超出递归深度而产生错误。
+    7. 要把递归用在恰到好处的地方才能发挥最大功效！
+        * 发明树的定义
+        * 解汉诺塔 
+    8. 递归来计算斐波那契数列数值：这帮小兔崽子！
+    	1. 斐波那契数列的重要性，引入
+    	2. 图表斐波那契数列
+    	3. 数学函数定义斐波那契数列
+    	4. 问题：假设我们需要求出经历了20个月后，总共有多少对小兔崽子？（迭代(常规 Vs list) VS 递归）
+    		1. 迭代：使用迭代效率较递归做法高，较优
+    		2. 递归：# 分治思 # 递归来做效率很低
+    		3. list容器迭代：# 空间复杂度较高	
+
+
 - [ ] **待办p15**：字符串BIF、源码方法学习帮助文档
-- [ ] **待办p22**：递归函数
+- [ ] **待办p24**：递归——汉诺塔
 
 ---
 
@@ -2303,4 +2329,227 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
             
             迭代元素作为参数在表达式中运行，处理后的结果，返回，组成一个序列。
-                         
+
+## 011递归
+
+### 学习笔记
+
+1. 递归易产生深度溢出
+        
+        ===============================================
+            【超过最大递归深度】的情形：
+        ===============================================
+        >>> def recursion():
+        	return recursion()                                  
+        
+        >>> recursion()
+        Traceback (most recent call last):
+          File "<pyshell#9>", line 1, in <module>
+            recursion()
+          File "<pyshell#8>", line 2, in recursion
+            return recursion()
+          File "<pyshell#8>", line 2, in recursion
+            return recursion()
+          File "<pyshell#8>", line 2, in recursion
+            return recursion()
+          [Previous line repeated 1022 more times]              ——————————————————
+        RecursionError: maximum recursion depth exceeded        # 超过最大递归深度
+                                                                ——————————————————
+2. 获取 & 设置递归深度         
+    1. 获取递归深度   
+                     
+            ===============================================
+                1.【获取递归深度】
+            ===============================================                                                                
+            >>> help(sys)
+            
+            getrecursionlimit()
+                    Return the current value of the recursion limit.
+                    
+                    The recursion limit is the maximum depth of the Python interpreter
+                    stack.  This limit prevents infinite recursion from causing an overflow
+                    of the C stack and crashing Python.
+                    
+                    This IDLE wrapper subtracts 30 to compensate for the 30 IDLE adds when
+                    setting the limit.
+                    
+            getrecursionlimit() -- return the max recursion depth for the interpreter.
+    
+            ===============================================
+                【需要注意获取递归深度，首先要引入sys模块】
+            ===============================================   
+            
+            >>> sys.getrecursionlimit()
+            Traceback (most recent call last):
+              File "<pyshell#0>", line 1, in <module>
+                sys.getrecursionlimit()
+            NameError: name 'sys' is not defined        # 报错，sys未定义，需要先引入sys模块
+            
+            >>> import sys                              # 引入sys
+            >>> sys.getrecursionlimit()                 # 正常获取递归深度，默认1000（Python3.8）
+            1000
+            
+    2. 设置递归深度  
+    
+            ===============================================
+                2.【设置递归深度】
+            ===============================================
+            
+            >>> help(sys)
+            setrecursionlimit(limit, /)
+                    Set the maximum depth of the Python interpreter stack to n.
+                    
+                    This limit prevents infinite recursion from causing an overflow of the C
+                    stack and crashing Python.  The highest possible limit is platform-
+                    dependent.
+                    
+                    This IDLE wrapper adds 30 to prevent possible uninterruptible loops.
+            
+            
+            >>> import sys                         ——————————————
+            >>> sys.setrecursionlimit(1000000)     # 设置递归深度  
+            >>> sys.getrecursionlimit()            # 获取递归深度
+            1000000                                ——————————————
+    
+3. 实例：递归求阶乘
+    1. 常规解法（迭代）
+            
+            def factorial(n):
+                result = n
+                for i in range(1, n):       # 迭代元素不包含n
+                    result *= i
+                return result
+            
+            
+            number = int(input('请输入一个正整数:'))
+            result = factorial(number)
+            print('%d 的阶乘为%d' % (number, result))
+    
+            ---
+            
+            请输入一个正整数:5
+            5 的阶乘为120
+            
+    2. 递归解法    
+            
+            def factorial(n):
+                if n == 1:
+                    return 1
+                else:
+                    return n * factorial(n - 1)
+            
+            
+            number = int(input('请输入一个正整数：'))
+            result = factorial(number)
+            print('%d 的阶乘为%d' % (number, result))     
+            
+            
+            -----
+            
+            请输入一个正整数：5
+            5 的阶乘为120 
+        * **计算5的阶乘，递归图解如下：**
+        * ![计算5的阶乘，递归图解](img/011_factorial_recursion.jpg)
+             
+4. 递归的要求
+    * 调用函数自身
+    * 设置了自身正确的返回值，以及达到条件不再调用自身 
+5. 递归的实质
+    * 调用自身并且规定了调用的终止调用条件；
+    * 调用函数本身是入栈、出栈的过程；
+    * **频繁入栈、出(弹)栈消耗过大(非常消耗时间和空间)；**
+    * 而且，有可能因没有设置调用的终止条件或者调用**超出递归深度，都会产生错误程序崩溃**。
+6. 阶乘实际上没必要使用递归来计算。 
+        
+        如：计算100000的阶乘，按照默认的递归深度，导致超出递归深度报错
+        =========================================================================
+        请输入一个正整数：100000
+        Traceback (most recent call last):
+          File "C:/Python_0_basic/011递归/factorial2.py", line 9, in <module>
+            result = factorial(number)
+          File "C:/Python_0_basic/011递归/factorial2.py", line 5, in factorial
+            return n * factorial(n - 1)
+          File "C:/Python_0_basic/011递归/factorial2.py", line 5, in factorial
+            return n * factorial(n - 1)
+          File "C:/Python_0_basic/011递归/factorial2.py", line 5, in factorial
+            return n * factorial(n - 1)
+          [Previous line repeated 995 more times]
+          File "C:/Python_0_basic/011递归/factorial2.py", line 2, in factorial
+            if n == 1:
+        RecursionError: maximum recursion depth exceeded in comparison
+        =========================================================================
+        >>> import sys
+        >>> sys.getrecursionlimit()
+        1000
+            
+    * 当计算一个比较大的数值的阶乘的时候，会出现超出递归深度而产生错误。
+
+7. 要把递归用在恰到好处的地方才能发挥最大功效！
+    * 发明树的定义
+    * 解汉诺塔  
+8. 递归来计算斐波那契数列数值：这帮小兔崽子！
+    1. 斐波那契数列的重要性，引入
+      
+        ![斐波那契数列的重要性](img/011_Fibonacci_sequence01.jpg)
+    
+    2. 图表斐波那契数列
+    
+        ![图表斐波那契数列](img/011_Fibonacci_sequence02.jpg)
+    
+    3. 数学函数定义斐波那契数列
+    
+        ![数学函数定义斐波那契数列](img/011_Fibonacci_sequence03.jpg)
+    
+    4. 问题：假设我们需要求出经历了20个月后，总共有多少对小兔崽子？（迭代 VS 递归）
+        1. 迭代：使用迭代效率较递归做法高，较优
+        
+                def fab(n):
+                    if n < 1:
+                        print('输入有误！')
+                    n1 = 1
+                    n2 = 1
+                    n3 = 1
+                    # n-2 > 0 理解为数轴上距离n1位置的最小距离
+                    # 大于2执行循环体，否则跳出循环，意味着n1与
+                    # n2已经最靠近n位置了
+                    while n - 2 > 0:
+                        n3 = n1 + n2
+                        n1 = n2
+                        n2 = n3
+                        n -= 1
+                    return n3
+                
+                
+                result = fab(20)
+                print('总共有%d对小兔崽子诞生！' % result)
+        2. 递归：# 分治思 # 递归来做效率很低
+                
+                def fab(n):
+                    if n < 1:
+                        print('输入有误！')
+                        return -1
+                
+                    if n == 1 or n == 2:
+                        return 1
+                    return fab(n - 1) + fab(n - 2)
+                
+                
+                result = fab(20)
+                if result != -1:
+                    print('总共有%d对小兔崽子诞生了！' % result)    
+        3. list容器迭代：# 空间复杂度较高
+                
+                def fab(n):
+                    x = [0]
+                    x = x * n
+                    x[0] = 1
+                    x[1] = 1
+                    for i in range(2, n):   # range不包含n，正好脚标从0开始
+                        x[i] = x[i - 1] + x[i - 2]
+                    return x[n-1]
+                
+                
+                result = fab(20)
+                print('总共有%d对小兔崽子诞生！' % result)
+        
+            
