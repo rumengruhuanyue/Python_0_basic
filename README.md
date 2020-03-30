@@ -118,6 +118,20 @@
     		2. 递归：# 分治思 # 递归来做效率很低
     		3. list容器迭代：# 空间复杂度较高	
     9. 使用递归解汉诺塔问题
+- [012字典：当索引不好用时](#012字典)
+    1. **字典类型 对比 序列类型** 		
+    	1. Python当中唯一的映射类型,key-value形式；      
+        2. 区分序列类型：序列是以数组的形式进行存储，通过索引来取相应位置的值，数组中第一个元素的索引值为0，以此类推。一般索引值与对应的数据毫无关系。	
+    2. 字典类型的BIF		
+    	1. `fromkeys()` —— 返回一个新的字典
+    	2. `keys()`、`values()`、`items()` —— 配合迭代访问
+    	3. 直接使用key访问字典，key不存在的话会报错；但是通过`get()`访问比较宽松  
+    	4. 成员关系操作符：in、not in —— 判断key是否在字典当中 
+    	5. `clear()` —— 清空字典 与 赋值空字典是有区别的
+    	6. copy() —— 对字典的浅（shadow）拷贝（copy），与字典赋值是有区别的
+    	7. pop()与popitem()  
+    	8. `setdefault()` 
+    	9. **update()** —— 更新，若键存在，即更新，否则插入。参数为dict或者元组形式的list. 
 
 - [ ] **待办p15**：字符串BIF、源码方法学习帮助文档
 
@@ -2568,6 +2582,328 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             
             num = int(input('请输入汉诺塔层数：'))
             hanoi(num, 'X', 'Y', 'Z')
+ 
+## 012字典 
+
+* 字典的关键符号：`{}`
+* 跟序列类似的是也可以使用工厂函数创建字典`dict()`
+* 序列中试图为一个不存在的位置赋值，会提示越界报错；而在字典中会创建新的键-值对
+* 工厂函数（类型）不是普通的BIF，调用它生成该类型的实例。
+    * str(),int(),list(),tuple()...都是工厂函数
+
+### 学习笔记
+
+1. **字典类型 对比 序列类型**   
+    1. Python当中唯一的映射类型,key-value形式；      
+    2. 区分序列类型：序列是以数组的形式进行存储，通过索引来取相应位置的值，数组中第一个元素的索引值为0，以此类推。一般索引值与对应的数据毫无关系。
             
-           
-                
+            >>> brand  = ['李宁', '耐克', '阿迪达斯', 'Pyhon']
+            >>> slogan = ['一切皆有可能', 'Just do it', 'Impossible is nothing', '最简洁的语言']               
+            >>> print('李宁品牌的口号是：',slogan[brand.index('李宁')])
+            李宁品牌的口号是： 一切皆有可能
+            
+            ————————————————————————————————————————————
+            【注】字典英文： dictionary
+            
+            >>> help(dict)
+            Help on class dict in module builtins:
+            
+            class dict(object)
+             |  dict() -> new empty dictionary
+             |  dict(mapping) -> new dictionary initialized from a mapping object's
+             |      (key, value) pairs
+             |  dict(iterable) -> new dictionary initialized as if via:
+             |      d = {}
+             |      for k, v in iterable:
+             |          d[k] = v
+             |  dict(**kwargs) -> new dictionary initialized with the name=value pairs
+             |      in the keyword argument list.  For example:  dict(one=1, two=2)
+
+            ————————————————————————————————————————————
+            >>> dict1 = {'李宁':'一切皆有可能', '耐克':'Just do it', '阿迪达斯':'Impossible is nothing', 'Pyhon':'最简洁的语言'}
+            >>> print('Python的口号是：',dict1['Pyhon'])
+            Python的口号是： 最简洁的语言  
+            
+            
+            >>> dict2 = {1:'one', 2:'two', 3:'three'}
+            >>> dict2[2]
+            'two'
+            
+            >>> dict3 = {}   # 空字典
+            >>> dict3
+            {}        
+            
+            >>> dict4 = dict((('P',80),('y',121),('t',116),('h',104),('o',111),('n',110)))
+            >>> dict4
+            {'P': 80, 'y': 121, 't': 116, 'h': 104, 'o': 111, 'n': 110}   
+             
+            >>> dict5 = dict(Python = '让编程更加简洁', 李宁 = '一切皆有可能')
+            >>> dict5
+            {'Python': '让编程更加简洁', '李宁': '一切皆有可能'}
+            
+            >>> dict5 = dict('Python' = '让编程更加简洁', '李宁' = '一切皆有可能')   # 键，不能加引号
+            SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
+            
+            ——————————————————————————————————————————————————————————
+            # 修改键的值，若果键存在，则重新赋值；否则，添加新的键-值对
+            ——————————————————————————————————————————————————————————
+            >>> dict5['Python']
+            '让编程更加简洁'
+            >>> dict5['Python'] = '所有程序猿都应学习Python'
+            >>> dict5
+            {'Python': '所有程序猿都应学习Python', '李宁': '一切皆有可能'}
+            
+            >>> dict5['爱迪生'] = '天才就是99%的汗水＋1%的灵感，但这1%的灵感远远比99%的汗水更重要'
+            >>> dict5
+            {'Python': '所有程序猿都应学习Python', '李宁': '一切皆有可能', '爱迪生': '天才就是99%的汗水＋1%的灵感，但这1%的灵感远远比99%的汗水更重要'}
+
+2. 字典类型的BIF
+    1. `fromkeys()` —— 返回一个新的字典
+    
+            —————————————————————————————————————————————————————————————————————————————————————
+             |  ----------------------------------------------------------------------
+             |  Class methods defined here:
+             |  fromkeys(iterable, value=None, /) from builtins.type
+             |      Create a new dictionary with keys from iterable and values set to value.
+             |  # 第二个参数为所有key设置同一个默认值
+             |  ----------------------------------------------------------------------
+            —————————————————————————————————————————————————————————————————————————————————————
+            
+            >>> dict1 = {}
+            >>> dict1.fromkeys((1, 2, 3))
+            {1: None, 2: None, 3: None}
+            
+            >>> dict1.fromkeys((1, 2, 3),'Number')
+            {1: 'Number', 2: 'Number', 3: 'Number'}
+
+            >>> dict1.fromkeys((1, 2, 3),('one', 'two', 'three'))           # fromkeys第二个参数是设置所有key的默认值，这里设置为元组，则所有key默认值为元组
+            {1: ('one', 'two', 'three'), 2: ('one', 'two', 'three'), 3: ('one', 'two', 'three')}
+
+            >>> dict1.fromkeys((1, 3),'数字')   # 试图用fromkeys来修改key对应的值是不可以的，因为此方法返回一新的字典
+            {1: '数字', 3: '数字'}
+            >>> 
+            >>> dict1
+            {}
+            
+            # fromleys()方法 是 有返回值的函数 返回 新的字典
+            >>> dict2 = dict1.fromkeys((1, 3),'数字')
+            >>> dict2
+            {1: '数字', 3: '数字'}  
+            
+    2. `keys()`、`values()`、`items()` —— 配合迭代访问
+            
+            >>> dict1 = dict1.fromkeys(range(32), '赞')
+            >>> dict1
+            {0: '赞', 1: '赞', 2: '赞', 3: '赞', 4: '赞', 5: '赞', 6: '赞', 7: '赞', 8: '赞', 9: '赞', 10: '赞', 11: '赞', 12: '赞', 13: '赞', 14: '赞', 15: '赞', 16: '赞', 17: '赞', 18: '赞', 19: '赞', 20: '赞', 21: '赞', 22: '赞', 23: '赞', 24: '赞', 25: '赞', 26: '赞', 27: '赞', 28: '赞', 29: '赞', 30: '赞', 31: '赞'}
+            >>> for eachKey in dict1.keys():
+            	print(eachKey,end = ' ')
+            
+            	
+            0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 
+            >>> for eachValue in dict1.values():
+            	print(eachValue, end = ' ')
+            
+            	
+            赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 赞 
+            >>> for eachItem in dict1.items():
+            	print(eachItem, end = ' ')
+            
+            	
+            (0, '赞') (1, '赞') (2, '赞') (3, '赞') (4, '赞') (5, '赞') (6, '赞') (7, '赞') (8, '赞') (9, '赞') (10, '赞') (11, '赞') (12, '赞') (13, '赞') (14, '赞') (15, '赞') (16, '赞') (17, '赞') (18, '赞') (19, '赞') (20, '赞') (21, '赞') (22, '赞') (23, '赞') (24, '赞') (25, '赞') (26, '赞') (27, '赞') (28, '赞') (29, '赞') (30, '赞') (31, '赞')         
+    
+    3. 直接使用key访问字典，key不存在的话会报错；但是通过`get()`访问比较宽松   
+            
+            >>> print(dict1[31])
+            赞
+            
+            >>> print(dict1[32])        # 并没有key为32的键，直接访问报错
+            Traceback (most recent call last):
+              File "<pyshell#88>", line 1, in <module>
+                print(dict1[32])
+            KeyError: 32
+            
+            ————————————————————————————————————————————————————————————————————————————
+             |  get(self, key, default=None, /)
+             |      Return the value for key if key is in the dictionary, else default.
+            ————————————————————————————————————————————————————————————————————————————
+            
+            >>> dict1.get(32)           # get访问宽松，键不存在，默认返回None
+            >>> print(dict1.get(32))
+            None
+            
+            >>> dict1.get(32, '木有')   # 设置get(key[,default = None])的默认返回值，当key不存在返回设置的默认值
+            '木有'
+            >>> dict1.get(31,'木有')    # 当key存在，返回对应的value
+            '赞'
+    
+    4. 成员关系操作符：in、not in —— 判断key是否在字典当中          
+            
+            >>> dict1 = dict1.fromkeys(range(32), '赞')
+            >>> dict1
+            {0: '赞', 1: '赞', 2: '赞', 3: '赞', 4: '赞', 5: '赞', 6: '赞', 7: '赞', 8: '赞', 9: '赞', 10: '赞', 11: '赞', 12: '赞', 13: '赞', 14: '赞', 15: '赞', 16: '赞', 17: '赞', 18: '赞', 19: '赞', 20: '赞', 21: '赞', 22: '赞', 23: '赞', 24: '赞', 25: '赞', 26: '赞', 27: '赞', 28: '赞', 29: '赞', 30: '赞', 31: '赞'}
+            
+            >>> 31 in dict1
+            True
+            >>> 32 in dict1
+            False   
+            >>> 32 not in dict1
+            True    
+    5. `clear()` —— 清空字典 与 赋值空字典是有区别的
+            
+            ———————————————————————————————————————————————————————————————————————————————
+             # 赋值为空字典仅仅是引用指向了空字典，但是原来字典实际并未消失，彻底清空需要clear() 
+            ———————————————————————————————————————————————————————————————————————————————           
+            # 赋值为空字典的情形：
+            
+            >>> a = {'姓名':'李明'}
+            >>> b = a
+            >>> b
+            {'姓名': '李明'}
+            >>> a = {}
+            >>> a
+            {}
+            >>> b
+            {'姓名': '李明'}
+            
+            # 使用clear()清空字典的情形：
+            
+             |  clear(...)
+             |      D.clear() -> None.  Remove all items from D.
+            
+            >>> a = b
+            >>> a
+            {'姓名': '李明'}
+            >>> b
+            {'姓名': '李明'}
+            >>> a .clear()
+            >>> a
+            {}
+            >>> b
+            {}
+            
+    6. copy() —— 对字典的浅（shadow）拷贝（copy），与字典赋值是有区别的            
+            
+             |  copy(...)
+             |      D.copy() -> a shallow copy of D
+            >>> a = {1:'one', 2:'two', 3:'three'}
+            >>> b = a.copy()
+            >>> c = a
+            >>> c
+            {1: 'one', 2: 'two', 3: 'three'}
+            >>> a
+            {1: 'one', 2: 'two', 3: 'three'}
+            >>> b
+            {1: 'one', 2: 'two', 3: 'three'}
+            >>> 
+            >>> id(a)
+            2925151313984
+            >>> id(b)
+            2925151316928       # b为a的浅拷贝，地址与a是不同的，是不同的对象
+            >>> id(c)
+            2925151313984       # c是由a赋值而来的，指向同一内容，地址是一样
+            
+            >>> a.popitem()
+            (3, 'three')
+            >>> a
+            {1: 'one', 2: 'two'}        
+            >>> b
+            {1: 'one', 2: 'two'}        # a和b指向（引用）同一字典，对a的操作同时会作用于b。他们指向的是同一个东东。
+            >>> c
+            {1: 'one', 2: 'two', 3: 'three'}    # c是a的浅拷贝，a的操作不会影响c
+            
+            >>> c[4] = 'four'
+            >>> c
+            {1: 'one', 2: 'two', 3: 'three', 4: 'four'}
+            >>> a
+            {1: 'one', 2: 'two', 3: 'three', 4: 'four'}
+            >>> b
+            {1: 'one', 2: 'two', 3: 'three'}
+            
+    7. pop()与popitem()       
+            
+            ——————————————————————————————————————————————————————————————————————————————————————
+             |  pop(...)
+             |      D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
+             |      If key is not found, d is returned if given, otherwise KeyError is raised
+             |  
+             | # 去除指定key并返回对应的value。
+             | # 第二个参数可选，若设置了，当这个key不存在的话，返回第二个参数值 
+             | # 第二个参数未设置，当这个key不存在的话，会报错KeyError
+             
+             |  popitem(self, /)
+             |      Remove and return a (key, value) pair as a 2-tuple.
+             |      
+             |      Pairs are returned in LIFO (last-in, first-out) order.
+             |      Raises KeyError if the dict is empty.
+             |  
+             | # 去除一项并返回一个元组(key, value)，
+             | # 去除一项遵循"后进先出"原则
+             | # 当字典为空的话，产生KeyError错误。
+            ——————————————————————————————————————————————————————————————————————————————————————
+            >>> a
+            {1: 'one', 2: 'two', 3: 'three', 4: 'four'}
+            
+            >>> a.pop(2)
+            'two'
+            >>> a
+            {1: 'one', 3: 'three', 4: 'four'}
+            
+            >>> a.pop(6)        # 不存在这个key时，且未设置没有此key时的返回值，会产生KeyError。
+            Traceback (most recent call last):
+              File "<pyshell#34>", line 1, in <module>
+                a.pop(6)
+            KeyError: 6
+            
+            >>> a.pop(6,'未找到key：6')     # 不存在这个key时，且设置没有此key时的返回值，返回设置的返回值
+            '未找到key：6'
+            >>> s = a.pop(6,'未找到key：6')
+            >>> s
+            '未找到key：6'
+            
+            >>> a.popitem()     # 弹出（去除）最后进入字典的那一项
+            (4, 'four')                          
+    
+    8. `setdefault()` 
+    
+            ————————————————————————————————————————————————————————————————————————————  
+             |  setdefault(self, key, default=None, /)
+             |      Insert key with a value of default if key is not in the dictionary.
+             |      
+             |      Return the value for key if key is in the dictionary, else default.  
+             | 
+             | # 插入新的键，其对应的值不定义的话为默认值None，此默认值也可以自己设置
+             | # 若插入的key已经在字典中存在了，返回其对应的值。
+            ———————————————————————————————————————————————————————————————————————————— 
+            >>> a
+            {1: 'one', 3: 'three', 4: 'four'}
+            
+            >>> a.setdefault('小白')              # 未设置插入的新key的值，则它的值默认为None，插入一项，并返回值为None
+            >>> a
+            {1: 'one', 3: 'three', '小白': None}  
+            
+            >>> a.setdefault(5,'five')           # 设置插入新键的值，会在字典增加一项，并返回此值 
+            'five'
+            >>> a
+            {1: 'one', 3: 'three', '小白': None, 5: 'five'}
+            
+    9. **update()** —— 更新，若键存在，即更新，否则插入。参数为dict或者元组形式的list.            
+    
+            ————————————————————————————————————————————————————————————————————————————————————————————            
+             |  update(...)
+             |      D.update([E, ]**F) -> None.  Update D from dict/iterable E and F.
+             |      If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+             |      If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+             |      In either case, this is followed by: for k in F:  D[k] = F[k]
+            ————————————————————————————————————————————————————————————————————————————————————————————
+            >>> a
+            {1: 'one', 3: 'three', '小白': None, 5: 'five'}
+            
+            >>> b = {'小白':'狗'}
+            >>> a.update(b)
+            >>> a
+            {1: 'one', 3: 'three', '小白': '狗', 5: 'five'}
+            
+            >>> c = [(1,'ONE'),(2,'TWO')]
+            >>> a.update(c)
+            >>> a
+            {1: 'ONE', 3: 'three', '小白': None, 5: 'five', 2: 'TWO'}
