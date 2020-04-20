@@ -2907,3 +2907,119 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             >>> a.update(c)
             >>> a
             {1: 'ONE', 3: 'three', '小白': None, 5: 'five', 2: 'TWO'}
+            
+## 013集合
+
+* **set 类型**：
+* 集合内的元素具有唯一性
+* 集合元素是无序的
+* 不可以使用索引（脚标）访问元素
+        
+        
+### 学习笔记       
+
+1. 初步认识
+        
+       >>> num = {}   
+       >>> type(num)   # 字典类型
+       <class 'dict'>
+
+       >>> num2 = {1, 2, 3, 4, 5}
+       >>> num2     # 集合类型
+       {1, 2, 3, 4, 5}
+       >>> type(num2)
+       <class 'set'>       
+     
+       >>> num2 = {1, 2, 3, 4, 5, 4, 3, 2, 1}
+       >>> num2   # 集合元素的唯一性
+       {1, 2, 3, 4, 5}
+        
+       >>> num2[2]      # 不可以用索引访问
+       Traceback (most recent call last):
+         File "<pyshell#4>", line 1, in <module>
+           num2[2]
+       TypeError: 'set' object is not subscriptable
+        
+2. 如何创建集合
+    1. 直接把一堆元素用花括号括起来
+
+            >>> num2 = {1, 2, 3, 4, 5}
+            >>> num2     # 集合类型
+            {1, 2, 3, 4, 5}
+        
+    2. 使用set()工厂函数       
+            
+            >>> help(set)
+            Help on class set in module builtins:
+            
+            —————————————————————————————————————————————————————
+            class set(object)
+             |  set() -> new empty set object
+             |  set(iterable) -> new set object   # 使用序列创建
+             |  
+             |  Build an unordered collection of unique elements.
+            —————————————————————————————————————————————————————
+            
+            # 使用列表创建集合
+            >>> set1 = set([1, 2, 3, 4, 5, 4, 3])
+            >>> set1
+            {1, 2, 3, 4, 5}
+          
+            # 使用元组创建集合
+            >>> set2 = set((1,2,3,3,3))
+            >>> set2
+            {1, 2, 3}
+            
+            # 使用字符串创建集合
+            >>> set2 = set("212132")
+            >>> set2
+            {'3', '2', '1'}
+            
+            # set中元素可以不同类型
+            >>> set1 = set(('python', 'Java', '1', '2' , '1', 1, 0))
+            >>> set1
+            {0, 1, 'Java', '1', '2', 'python'}
+            
+3. 去掉列表中重复的元素
+    1. 定义一个空列表，遍历给定列表，将没有重复的元素添加到空列表
+           
+            >>> num1 = [1, 2, 3, 4, 5, 3, 1, 0]
+            >>> temp = [] 
+            >>> for each in num1:
+                if each not in temp:
+                     temp.append(each)
+           
+           		
+            >>> temp
+            [1, 2, 3, 4, 5, 0]         
+    
+    2. 使用集合剔除重复变量，但是注意集合无序性
+            
+            >>> num1
+            [1, 2, 3, 4, 5, 3, 1, 0]
+            >>> num1 = list(set(num1))
+            >>> num1
+            [0, 1, 2, 3, 4, 5]                
+
+4. 如何访问集合中的值
+    1. 使用for循环遍历
+    2. 通过成员关系运算符 `in`/ `not in` 判断元素是否在集合中
+         
+           >>> num1
+           [0, 1, 2, 3, 4, 5]
+           >>> 1 in num1
+           True
+           >>> '1' in num1
+           False     
+           
+           
+           >>> num1.remove(5)  # 移除元素
+           >>> num1
+           [0, 1, 2, 3, 4]     
+            
+           >>> num1.append(6)  # 添加元素
+           >>> num1
+           [0, 1, 2, 3, 4, 6]
+           
+5. 不可变集合——`frozenset`        
+       
