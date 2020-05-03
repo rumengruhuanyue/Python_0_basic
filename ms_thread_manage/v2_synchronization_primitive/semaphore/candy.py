@@ -12,7 +12,7 @@ def refill():
     lock.acquire()  # 获取到锁，执行生产糖果的操作
     print('Refilling candy...', end=' ')
     try:
-        candytray.release()
+        candytray.release()  # 执行.release()是信号量加1的操作
     except ValueError:
         print('full, skipping')
     else:
@@ -33,7 +33,7 @@ def buy():
     # def acquire(self, blocking: bool = ..., timeout: float = ...) -> bool: ...
     # 这里的bool值设置，意思是阻塞状态下返回这个值，不阻塞的话正常执行
     if candytray.acquire(False):  # 一旦不能获取到，即当前阻塞，阻塞则返回填写的False，则执行else；获取的到则正常执行
-        print('OK')
+        print('OK')  # 执行.acquire()是信号量减1的操作
     else:
         print('empty, skipping')
     lock.release()  # 释放锁
@@ -42,7 +42,7 @@ def buy():
 def producer(loops):
     for i in range(loops):
         refill()
-        sleep(randrange(3))     # 随机每次休息
+        sleep(randrange(3))  # 随机每次休息
 
 
 def consumer(loops):
