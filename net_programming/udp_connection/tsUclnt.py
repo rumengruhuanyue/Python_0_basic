@@ -14,6 +14,7 @@ BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
 udpCliSock = socket(AF_INET, SOCK_DGRAM)
+
 while True:
     data = input('> ')
     if not data:
@@ -24,3 +25,4 @@ while True:
         break
     print(data1.decode('utf-8'))
 
+udpCliSock.close()
