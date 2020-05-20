@@ -3051,3 +3051,175 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             Traceback (most recent call last):
               File "<input>", line 1, in <module>
             AttributeError: 'frozenset' object has no attribute 'remove'
+
+## 014文件
+
+* 内存和CPU的运算速度 >> 硬盘和CPU的传输速度
+* 但是内存的不足：一旦断电，就没戏，什么都没剩下
+* 所以，必要时，数据定期保存到磁盘中去。
+
+### 学习笔记     
+
+1. 打开文件并返回文件对象   
+    1. 查看文件打开 BIF——`open`，打开模式选项
+    
+          open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)   
+            
+            >>> help(open)
+            Help on built-in function open in module io:
+            
+            open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)     
+            
+            ========= ===============================================================
+            Character Meaning
+            --------- ---------------------------------------------------------------
+            'r'       open for reading (default)                                        # 'r': (只读)只读方式打开文件（默认）
+            'w'       open for writing, truncating the file first                       # 'w': (覆盖)以写入的方式打开，会覆盖已存在的文件
+            'x'       create a new file and open it for writing                         # 'x': (创建)如果文件已经存在，使用此模式打开将引发异常
+            'a'       open for writing, appending to the end of the file if it exists   # 'a': (追加)以写入模式打开，如果文件存在，则在末尾追加写入
+            'b'       binary mode                                                       # 'b': 以二进制模式打开文件
+            't'       text mode (default)                                               # 't': 以文本模式打开（默认）
+            '+'       open a disk file for updating (reading and writing)               # '+': 更新一个文件，可读写模式（可添加到其他模式中使用）
+            'U'       universal newline mode (deprecated)                               # 'U'：通用换行符支持（py3x 中被弃用）
+            ========= ===============================================================
+    
+    2. 打开文件，查看文件对象类型——`_io.TextIOWrapper`
+    
+            >>> f = open('E:/test.txt','r')
+            >>> f
+            <_io.TextIOWrapper name='E:/test.txt' mode='r' encoding='cp936'>
+            >>> type(f)
+            <class '_io.TextIOWrapper'>
+            
+    3. 文件对象方法
+            
+            >>> from _io import TextIOWrapper
+            >>> help(TextIOWrapper)
+            Help on class TextIOWrapper in module io:
+            
+            class TextIOWrapper(_TextIOBase)
+             |  TextIOWrapper(buffer, encoding=None, errors=None, newline=None, line_buffering=False, write_through=False)
+             |  
+             |  Character and line based layer over a BufferedIOBase object, buffer.
+             |  
+             |  encoding gives the name of the encoding that the stream will be
+             |  decoded or encoded with. It defaults to locale.getpreferredencoding(False).
+             |  
+             |  errors determines the strictness of encoding and decoding (see
+             |  help(codecs.Codec) or the documentation for codecs.register) and
+             |  defaults to "strict".
+             |  
+             |  newline controls how line endings are handled. It can be None, '',
+             |  '\n', '\r', and '\r\n'.  It works as follows:
+             |  
+             |  * On input, if newline is None, universal newlines mode is
+             |    enabled. Lines in the input can end in '\n', '\r', or '\r\n', and
+             |    these are translated into '\n' before being returned to the
+             |    caller. If it is '', universal newline mode is enabled, but line
+             |    endings are returned to the caller untranslated. If it has any of
+             |    the other legal values, input lines are only terminated by the given
+             |    string, and the line ending is returned to the caller untranslated.
+             |  
+             |  * On output, if newline is None, any '\n' characters written are
+             |    translated to the system default line separator, os.linesep. If
+             |    newline is '' or '\n', no translation takes place. If newline is any
+             |    of the other legal values, any '\n' characters written are translated
+             |    to the given string.
+             |  
+             |  If line_buffering is True, a call to flush is implied when a call to
+             |  write contains a newline character.
+             |  
+             |  Method resolution order:
+             |      TextIOWrapper
+             |      _TextIOBase
+             |      _IOBase
+             |      builtins.object
+
+            __________________________________________________________________________________
+            
+            ————————————————————————————————————————————————————————————————————————
+            read————读取[size]个字符，默认不设置，读完整片
+            ————————————————————————————————————————————————————————————————————————
+             |  read(self, size=-1, /)
+             |      Read at most n characters from stream.
+             |      
+             |      Read from underlying buffer until we have n characters or we hit EOF.
+             |      If n is negative or omitted, read until EOF.
+            
+            ————————————————————————————————————————————————————————————————————————
+            seek————设置'书签'位置，修改文件指针
+            ————————————————————————————————————————————————————————————————————————
+             |  seek(self, cookie, whence=0, /)
+             |      Change stream position.
+             |      
+             |      Change the stream position to the given byte offset. The offset is
+             |      interpreted relative to the position indicated by whence.  Values
+             |      for whence are:
+             |      
+             |      * 0 -- start of stream (the default); offset should be zero or positive
+             |      * 1 -- current stream position; offset may be negative
+             |      * 2 -- end of stream; offset is usually negative
+             |      
+             |      Return the new absolute position.
+            
+            ————————————————————————————————————————————————————————————————————————
+            tell————告知当前‘书签’所在位置，就是现在要继续读的话，从这个地方开始
+            ————————————————————————————————————————————————————————————————————————
+             |  tell(self, /)
+             |      Return current stream position.
+            
+            ————————————————————————————————————————————————————————————————————————
+            readline————读取一行
+            ————————————————————————————————————————————————————————————————————————
+             |  readline(self, size=-1, /)
+             |      Read until newline or EOF.
+             |      
+             |      Returns an empty string if EOF is hit immediately.
+            
+            >>> f = open('E:/test.txt','r',encoding='utf-8') 
+            >>> f.read(10)   # 从开始位置读取10个字符
+            '自从20世纪90年代'
+            
+            >>> f.seek(20,0)
+            20
+            >>> f.tell()
+            20
+            >>> f.seek(0,0)
+            0
+            >>> f.tell()
+            0
+            
+            
+            >>> f.seek(0,0)     # 重置到起始位置
+            0
+            
+            >>> f.readline()    # 读取一行
+            '自从20世纪90年代初Python语言诞生至今，它已被逐渐广泛应用于系统管理任务的处理和Web编程。\n'
+            
+            >>> f.tell()        # 查看现在所在的流位置（stream position）
+            18446744073709551742
+            
+            >>> f.seek(18446744073709551742,0)      # 流位置不能随便设置（貌似）
+            18446744073709551742
+            
+            >>> f.read()
+            "\nPython的创始人为荷兰人吉多·范罗苏姆.....
+            
+            
+            >>> for each_line in f:
+            	print(each_line)        # 迭代打印每行
+            	
+            	
+            >>> file = open('E:\\ts.txt', 'w')      # 目录下没有ts.txt，所有先在目录下创建了名为ts.txt空文件
+            >>> file.write('一起学习')
+            4
+            >>> file.close()        # 关闭后，保存到了磁盘中
+            
+            
+            >>> file = open('E:\\ts.txt', 'w')      # 目录下有此文件，打开此文件
+            
+            ### 现在执行write方法则覆盖了原来的内容。
+                                                               
+            >>> file.write('自从20世纪90年代初Python语言诞生至今，它已被逐渐广泛应用于系统管理任务的处理和Web编程。Python的创始人为荷兰人吉多·范罗苏姆 [4]（Guido van Rossum）。1989年圣诞节期间，在阿姆斯特丹，Guido为了打发圣诞节的无决心开发一个新的脚解释程序，作为ABC 语言的一种继承。之所以选中Python（大蟒蛇')
+            169
+            >>> file.close()     # 覆盖原来内容保存在磁盘
