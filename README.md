@@ -3022,4 +3022,19 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
            [0, 1, 2, 3, 4, 6]
            
 5. 不可变集合——`frozenset`        
-       
+    * 不能够添加元素或删除元素
+    
+            >>> num3 = frozenset([1, 2, 3, 4, 5])
+            >>> num3
+            frozenset({1, 2, 3, 4, 5})
+            >>> num3.append(6)  # frozenset 不可变集合，不允许修改。
+            
+            Traceback (most recent call last):
+              File "<pyshell#3>", line 1, in <module>
+                num3.append(6)
+            AttributeError: 'frozenset' object has no attribute 'append'
+            
+            num3.remove(1)
+            Traceback (most recent call last):
+              File "<input>", line 1, in <module>
+            AttributeError: 'frozenset' object has no attribute 'remove'
