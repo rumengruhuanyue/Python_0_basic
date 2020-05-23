@@ -8,6 +8,7 @@
     - 字符串
         1. 原始字符串
         2. 长字符串
+        3. BIF
 - [003条件分支及while循环及and逻辑运算符及引入模块](#003条件分支及while循环及and逻辑运算符及引入模块)
     - 条件分支
     - while循环
@@ -296,6 +297,7 @@
 ### 学习笔记
 
 1. 变量
+    
     * 变量声明，不需要声明其类型
     * 在使用变量前，要先对其赋值
     * 变量名可以包含字母、数字、下划线，但是变量名不可以数字开头
@@ -308,6 +310,7 @@
             建议不要使用关键字做变量名.
             
 2. 字符串：
+
     * 创建一个字符串时，要在字符两边加上引号。单引号或者双引号都可以。
     * 需要打印引号双引号，一种方式是加转译符“\’”；另一种方式是？？？见习题
     1. 原始字符串（省事，比如路径中好多个反斜杠，依次转译有些许麻烦）
@@ -369,7 +372,27 @@
                 学习和使用通常比较简单
                 通常以容易修改程序的“解释”作为运行方式，而不需要“编译”
                 程序的开发产能优于运行性能
-            
+
+3. BIF
+    1. **split**
+    
+             |  split(self, /, sep=None, maxsplit=-1)
+             |      Return a list of the words in the string, using sep as the delimiter string.
+             |      
+             |      sep
+             |        The delimiter according which to split the string.
+             |        None (the default value) means split according to any whitespace,
+             |        and discard empty strings from the result.
+             |      maxsplit
+             |        Maximum number of splits to do.
+             |        -1 (the default value) means no limit.
+        
+        * Python split() 通过指定分隔符对字符串进行切片，如果参数 num 有指定值，则分隔 num+1 个子字符串
+        
+        * 参数
+            * str -- 分隔符，默认为所有的空字符，包括空格、换行(\n)、制表符(\t)等。
+            * num -- 分割次数。默认为 -1, 即分隔所有。num=1,则分隔一次，若分隔了则产生两个字符串。
+
 ## 003条件分支及while循环及and逻辑运算符及引入模块
 
 ## 学习笔记
