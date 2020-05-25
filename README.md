@@ -145,7 +145,40 @@
     	1. 使用for循环遍历
     	2. 通过成员关系运算符 `in`/ `not in` 
     5. 不可变集合——`frozenset` 
-    
+
+- [014文件/文件系统](#014文件)
+    1. 打开文件并返回文件对象
+    	1. 查看文件打开 BIF——**`open`**，打开模式选项
+    	2. 打开文件，查看文件对象类型——`_io.TextIOWrapper`
+    	3. 文件对象方法(**读/写/查看流位置/读取流位置设置/遍历**)
+    2. **文件系统**(list_1-11 ：**os.xxx** / list_12： **os.path.xxx**)
+    	1. os.**getcwd**() —— 查看当前工作目录
+    	2. **`os.chdir(path)`** —— 修改当前工作目录
+    	3. 在当前目录下 创建/写入 文件
+    	4. os.**listdir**(path)——**获取**当前**路径下**的**全部内容（目录/文件）**
+    	5. 创建一层目录——**mkdir**()
+    		1. 若目录名已经存在，则报错
+    		2. 只允许当前目录下创建一级子目录，超过一级则报错
+    	6. os.**makedirs**(path) —— 递归创建多层目录
+    		* 若目录名已经存在，则报错
+    	7. 删除最低一层空目录——os.**rmdir**(path)/删除文件——os.**remove**(path)
+    		* 【注】目录下不能有文件
+    	8. 递归删除目录——os.**removedirs**(path)
+    		1. 目录下有内容（不是空目录），报错
+    		2. 删除不存在的目录，报错      
+    		3. 【**对比**】os.removedirs()删除一串空目录方法 ；与os.rmdir(path)区别在于:连带上级目录页一起删除
+    	9. **运行系统的shell**——os.system(command_str)
+    	10. **指代当前目录——os.curdir / 指代上一级目录——os.pardir**
+    	11. 其他（路径分割符/操作系统名/行终止符）
+    	12. **`os.path.basename(path)/.basedir(path)`** —— 获取文件名/文件路径
+    	13. os.path.**join**(path, *paths) —— 路径拼接
+    	14. **`os.path.split(path) / splitext(path)`** —— 路径分割出最低一级内容 / 扩展名分隔
+    	15. os.path.**getsize**(path) —— 获取文件的大小,单位字节
+    	16. **`os.path.getatime(path)/getctime(path)/getmtime(path)`** —— 返回指定文件最近的访问时间/创建时间/最近的修改时间（浮点型秒数，可用time模块的gmtime()——0时区时间 或 localtime()—— 当前时区 函数换算）
+    		1. win下窗口查看，右键文件，属性——常规——创建时间/修改时间/访问时间  
+    		2. 获取文件的上次访问时间
+    		3. 时间转换 —— time.**gmtime**(time_float) / time.**localtime**(time_float)
+    	17. **`os.path.`**xxx_some_判断 —— 一些判断     
     
 - [ ] **待办p15**：字符串BIF、源码方法学习帮助文档
 
@@ -3114,7 +3147,7 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             >>> type(f)
             <class '_io.TextIOWrapper'>
             
-    3. 文件对象方法
+    3. 文件对象方法(读/写/查看流位置/读取流位置设置/遍历)
             
             >>> from _io import TextIOWrapper
             >>> help(TextIOWrapper)
@@ -3246,3 +3279,289 @@ tuple  /ˈtʌpəl/  n. [计] 元组，重数
             >>> file.write('自从20世纪90年代初Python语言诞生至今，它已被逐渐广泛应用于系统管理任务的处理和Web编程。Python的创始人为荷兰人吉多·范罗苏姆 [4]（Guido van Rossum）。1989年圣诞节期间，在阿姆斯特丹，Guido为了打发圣诞节的无决心开发一个新的脚解释程序，作为ABC 语言的一种继承。之所以选中Python（大蟒蛇')
             169
             >>> file.close()     # 覆盖原来内容保存在磁盘
+
+2. 文件系统(list_1-11 ：os.xxx / list_12： os.path.xxx)
+    1. os.getcwd() —— 查看当前工作目录
+            
+            >>> import os
+            # 查看当前工作目录
+            >>> os.getcwd()     
+            'C:\\Windows\\system32'
+            
+    2. **`os.chdir(path)`** —— 修改当前工作目录
+    
+            # 修改当前工作目录
+            >>> os.chdir('E:\\')   
+            >>> os.getcwd()   
+            'E:\\'    
+        
+    3. 在当前目录下 **创建/写入** 文件
+            
+            # 当前目录下没有此文件，先创建此文件，并且可以写入模式
+            >>> f = open(os.getcwd()+ 'aaa.txt','w')     
+            >>> f.write('txtx')
+            4
+            >>> f.close()
+    
+    4. os.listdir(path)——**获取**当前**路径下**的**全部内容（目录/文件）**
+            
+            # 返回列表类型
+            >>> os.listdir()
+            ['$RECYCLE.BIN', '80本 Python量化资料学习', 'aaa.txt', 'Clip', 'CloudMusic', 'Download', 'DTL8Folder', 'GameDownload', 'Google_download', 'KuGou', 'liu_data', 'msdia80.dll', 'MyDrivers', 'QQMusicCache', 'qqpcmgr_docpro', 'System Volume Information', 'temp', 'Tencent Files', 'test.txt', 'ts.txt', 'wallpaper', 'wallpaper_back', 'Youku Files', '迅雷下载', '风泉_返佣记录']
+            >>> 'aaa.txt' in os.listdir()   # 刚刚创建的文件，所有判断在当前路径下
+            True
+            
+    5. 创建一层目录——mkdir()
+        1. 若目录名已经存在，则报错
+        2. 只允许当前目录下创建一级子目录，超过一级则报错
+            
+                >>> mkdir(os.getcwd() + '\\test_mkdir') 
+                
+                >>> os.listdir()  # 列出当前目录下的内容
+                ['$RECYCLE.BIN', '80本 Python量化资料学习', 'aaa.txt', 'Clip', 'CloudMusic', 'Download', 'DTL8Folder', 'GameDownload', 'Google_download', 'KuGou', 'liu_data', 'msdia80.dll', 'MyDrivers', 'QQMusicCache', 'qqpcmgr_docpro', 'System Volume Information', 'temp', 'Tencent Files', 'test.txt', 'test_mkdir', 'ts.txt', 'wallpaper', 'wallpaper_back', 'Youku Files', '迅雷下载', '风泉_返佣记录']
+                >>> 'test_mkdir' in listdir()
+                True
+                
+                >>> mkdir(getcwd() + '\\test_mkdir\\dir_sun') # 当前目录下创建一级子目录  
+                >>> 'dir_sun' in os.listdir(os.getcwd()+'\\test_mkdir')
+                True 
+                ____________________________________________________
+                >>> mkdir(getcwd() + '\\test_mkdir')
+                Traceback (most recent call last):
+                  File "<pyshell#14>", line 1, in <module>
+                    mkdir(getcwd() + '\\test_mkdir')
+                FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'E:\\\\test_mkdir'
+                ——————————————————————————————————————————————————————————————————————————
+                >>> mkdir(getcwd() + '\\A\\B\\')
+                Traceback (most recent call last):
+                  File "<pyshell#15>", line 1, in <module>
+                    mkdir(getcwd() + '\\A\\B\\')
+                FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\\\A\\B\\'
+                ——————————————————————————————————————————————————————————————————————————
+                >>> mkdir(getcwd() + '\\A\\B')
+                Traceback (most recent call last):
+                  File "<pyshell#16>", line 1, in <module>
+                    mkdir(getcwd() + '\\A\\B')
+                FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\\\A\\B'
+                ——————————————————————————————————————————————————————————————————————————
+
+    6. os.makedirs(path) —— 递归创建多层目录
+        * 若目录名已经存在，则报错
+        
+                >>> os.makedirs(os.getcwd() + '\\A\\B') # 当前目录E：下递归创建多层目录
+                
+                >>> os.makedirs(os.getcwd() + '\\A\\B') # 目录已经存在的话
+                
+                Traceback (most recent call last):
+                  File "<pyshell#20>", line 1, in <module>
+                    makedirs(getcwd() + '\\A\\B') # 目录已经存在的话
+                  File "D:\Anaconda3\envs\Python38\lib\os.py", line 223, in makedirs
+                    mkdir(name, mode)
+                FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'E:\\\\A\\B'    
+
+    7. 删除最低一层空目录——os.rmdir(path)/删除文件——os.remove(path)
+        * 【注】目录下不能有文件
+        
+                >>> os.rmdir('E:\\A\\B')
+                Traceback (most recent call last):
+                  File "<pyshell#37>", line 1, in <module>
+                    rmdir('E:\\A\\B')
+                OSError: [WinError 145] 目录不是空的。: 'E:\\A\\B'                  
+                
+                ________________________________________________________________________
+                >>> os.remove('E:\\A\\B\\A_B.txt')   # 删除'E:\\A\\B' 路径下的所有文件后，
+                
+                >>> os.rmdir('E:\\A\\B')  # 去除一层目录————B目录,成功
+                
+                >>> 'A' in os.listdir()   # 去除目录的  上级目录  依旧存在
+                True
+        
+    8. 递归删除目录——os.removedirs(path)
+        1. 目录下有内容（不是空目录），报错
+        
+                >>> os.makedirs(os.getcwd() + 'A\\B\\C\\D')
+                >>> os.removedirs(os.getcwd() + 'A\\B\\C')
+                Traceback (most recent call last):
+                  File "<pyshell#48>", line 1, in <module>
+                    removedirs(getcwd() + 'A\\B\\C')
+                  File "D:\Anaconda3\envs\Python38\lib\os.py", line 241, in removedirs
+                    rmdir(name)
+                OSError: [WinError 145] 目录不是空的。: 'E:\\A\\B\\C'
+                
+                >>> os.removedirs(os.getcwd() + 'A\\B\\C\\D')  # 删除一串空目录 
+        
+        2. 删除不存在的目录，报错        
+                
+                >>> os.removedirs(os.getcwd() + 'A\\B\\C\\E')
+                Traceback (most recent call last):
+                  File "<pyshell#50>", line 1, in <module>
+                    removedirs(getcwd() + 'A\\B\\C\\E')
+                  File "D:\Anaconda3\envs\Python38\lib\os.py", line 241, in removedirs
+                    rmdir(name)
+                FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\A\\B\\C\\E'
+                
+                
+                
+                
+                >>> os.makedirs(os.getcwd() + 'A\\B\\C')
+                >>> os.removedirs(os.getcwd() + 'A\\B\\C') # 递归删除目录，从要删除目录一级一级往上删除目录，即删除整个文件目录
+        
+        3. 【对比】os.removedirs()删除一串空目录方法 ；与os.rmdir(path)区别在于:连带上级目录页一起删除
+        
+                >>> makedirs(getcwd() + 'A\\B\\C\\D')
+                
+                >>> removedirs(getcwd() + 'A\\B\\C\\D')
+                
+                >>> 'A' in listdir()    # 可以看到 A/B/C/D均被删除；若使用rmdir()仅仅能删除D目录
+                False
+        
+    9. 运行系统的shell——os.system(command_str)
+            
+            >>> os.system('calc')   # 运行系统的shell.如：打开win 计算器程序
+            >>> os.system('cmd')   # 打开cmd
+        
+    10. 指代当前目录——os.curdir / 指代上一级目录——os.pardir
+    
+            >>> os.listdir(os.curdir)  # 获取当前目录下的文件/目录————较正规写法 
+            ['$RECYCLE.BIN', 'aaa.txt', 'Clip', 'CloudMusic', 'Download', 'DTL8Folder', 'GameDownload', 'Google_download', 'KuGou']       
+            
+            >>> os.listdir('.')   # 获取当前目录下的文件/目录
+            ['$RECYCLE.BIN', 'aaa.txt', 'Clip', 'CloudMusic', 'Download', 'DTL8Folder', 'GameDownload', 'Google_download', 'KuGou']
+       
+    11. 其他   
+
+            >>> os.sep   # 输出操作系统特定的路径分隔符（Win下'\\'；Linux下为'/'）
+        
+            >>> os.linesep   # 当前平台使用的行终止符（Win下为'\r\n'，Linux下为'\n'）
+        
+            >>> os.name    # 指代当前使用的操作系统（包括：'pssix'——UNIX; 'nt'——win ; 'mac'——苹果 ; 'os2' ; 'ce' ; 'java'）
+        
+    12. **`os.path.basename(path)/.basedir(path)`** —— 获取文件名/文件路径
+        
+            >>> os.path.basename('D:\\A\\B\\test_path.avi')  # 去掉目录路径，单独返回文件名
+            'test_path.avi'   
+            >>> os.path.dirname('D:\\A\\B\\test_path.avi')  # 去掉文件名，单独返回目录路径
+            'D:\\A\\B' 
+
+    13. os.path.join(path, *paths) —— 路径拼接
+        
+        > def join(path, *paths): 第一个参数————需要拼接的路径，后面*paths为收集参数，类型元组
+        
+        >【注】第一个参数如果为win下某个盘（即根目录），win下要加双反斜杠。即要加杠
+        
+            >>> os.path.join('C:','A','B','C')    # 第一参数不手动加杠的话，路径中缺少杠
+            'C:A\\B\\C'
+            >>> os.path.join('C:\\','A','B','C')  # 第一个参数要手动加杠，表示某个盘
+            'C:\\A\\B\\C'
+    
+    14. **`os.path.split(path) / splitext(path)`** —— 路径分割出最低一级内容 / 扩展名分隔
+        
+            ————————————————————————————————————————————————————————————————
+            def split(path):
+                """Split the pathname path into a pair, (head, tail).  
+                return path, path  # 分成 头/尾 两部分
+            
+            def splitext(path):
+                """Split the pathname path into a pair (root, ext).
+                return path, path  # 分成 文件路径/扩展名 两部分
+            ————————————————————————————————————————————————————————————————
+            
+            >>> os.path.split('D:\\A\\B\\test_path.avi')  # 分隔出最下一层内容/上级目录
+            ('D:\\A\\B', 'test_path.avi')
+            
+            >>> os.path.split('D:\\A\\B\\C')  # 即使是单纯的目录，也会分出最下一层目录
+            ('D:\\A\\B', 'C')
+            
+            >>> os.path.split('d:')     # 直到只有根目录时，分隔出空目录/根目录
+            ('d:', '')
+    
+            >>> os.path.split('d:\\')   # 直到只有根目录时，分隔出空目录/根目录
+            ('d:\\', '')
+    
+            >>> os.path.splitext('D:\\A\\B\\test_path.avi')   # 分离出扩展名/文件除扩展名外的路径
+            ('D:\\A\\B\\test_path', '.avi')
+            
+            >>> os.path.splitext('D:\\A\\B\\C')   # 若单纯的路径，分隔出扩展名''为空
+            ('D:\\A\\B\\C', '')     
+            
+    15. os.path.getsize(path) —— 获取文件的大小,单位字节    
+        
+            def getsize(path):
+                """Return the size, in bytes, of path.  # 返回指定文件的大小，单位是字节
+             
+    16. **`os.path.getatime(path)/getctime(path)/getmtime(path)`** —— 返回指定文件最近的访问时间/创建时间/最近的修改时间（浮点型秒数，可用time模块的gmtime()——0时区时间 或 localtime()—— 当前时区 函数换算）
+        1. win下窗口查看，右键文件，属性——常规——创建时间/修改时间/访问时间    
+               
+                def getatime(path):
+                    """Return the time of last access of path.
+                    
+                def getctime(path):
+                            """Return the system's ctime.  
+                            
+                def getmtime(path):
+                    """Return the time of last modification of path.
+        
+        2. 获取文件的上次访问时间
+        
+                >>> os.path.getatime('E:\\aaa.txt')
+                1590200125.1991172
+        
+        3. 时间转换 —— time.gmtime(time_float) / time.localtime(time_float)
+        
+                >>> import time  # GMT——格林尼治时间，0时区时间 / localtime 本地时区时间
+                
+                >>> t = os.path.getatime('E:\\aaa.txt')  # 获取文件的上次访问时间
+                >>> time.gmtime(t)      # 0 时区
+                time.struct_time(tm_year=2020, tm_mon=5, tm_mday=23, tm_hour=2, tm_min=15, tm_sec=25, tm_wday=5, tm_yday=144, tm_isdst=0)
+               
+                >>> time.localtime(t)  # 当前时区的
+                time.struct_time(tm_year=2020, tm_mon=5, tm_mday=23, tm_hour=10, tm_min=15, tm_sec=25, tm_wday=5, tm_yday=144, tm_isdst=0)
+                
+                >>> t = os.path.getatime('E:\\aaa.txt')  # 上次访问时间        
+                >>> time.localtime(t)
+                time.struct_time(tm_year=2020, tm_mon=5, tm_mday=23, tm_hour=10, tm_min=15, tm_sec=25, tm_wday=5, tm_yday=144, tm_isdst=0)
+                >>> 
+                >>> t = os.path.getctime('E:\\aaa.txt')  # 文件创建时间
+                >>> time.localtime(t)
+                time.struct_time(tm_year=2020, tm_mon=5, tm_mday=23, tm_hour=10, tm_min=15, tm_sec=25, tm_wday=5, tm_yday=144, tm_isdst=0)
+                
+                >>> t = os.path.getmtime('E:\\aaa.txt') # 文件上次修改时间
+                >>> time.localtime(t)
+                time.struct_time(tm_year=2020, tm_mon=5, tm_mday=25, tm_hour=10, tm_min=29, tm_sec=16, tm_wday=0, tm_yday=146, tm_isdst=0)      
+        
+    17. **`os.path.`**xxx_some_判断 —— 一些判断     
+            
+            1.
+            def exists(path):  # 判断路径是否存在
+                """Return True if path refers to an existing path. Returns False for broken
+                symbolic links.    
+            2.
+            def isabs(path):  # 判断路径是否绝对路径
+                """Return True if path is an absolute pathname.
+            3.    
+            def isdir(path):  # 判断路径是否存在且是一个目录
+                """Return True if path is an existing directory.
+            4.    
+            def isfile(path):  # 判断路径是否存在且是一个文件
+                """Return True if path is an existing regular file.
+            5.
+            def islink(path):  # 判断路径是否存在且是一个符号链接（如win下的快捷方式）
+                """Return True if path refers to a directory entry that is a symbolic link.
+            6.
+            ____________________________________________________________________
+            def ismount(path):  # 判断路径是否存在且是一个挂载点（根目录）
+                """Return True if pathname path is a mount point: a point in a file system
+                where a different file system has been mounted.
+            ————————————————————————————————————————————————————————————————————
+            >>> os.path.ismount('e:\\x')
+            False
+            >>> os.path.ismount('e:\\')
+            True
+            
+            7.
+            def samefile(path1, path2):  # 判断path1与path2两个路径是否指向同一个文件
+                """Return True if both pathname arguments refer to the same file or
+                directory.    
+    
+    
+            
