@@ -180,9 +180,16 @@
     		2. 获取文件的上次访问时间
     		3. 时间转换 —— time.**gmtime**(time_float) / time.**localtime**(time_float)
     	17. **`os.path.`**xxx_some_判断 —— 一些判断     
-    
+
 - [ ] **待办p15**：字符串BIF、源码方法学习帮助文档
 
+- [python爬数据插入到数据库](scraping/README.md)
+    - 远程linux环境安装mysql数据库
+    - mysqlclient库
+    - requests库
+    - bs4库
+    - lxml库
+    
 ---
 
 ## 001入门简介
