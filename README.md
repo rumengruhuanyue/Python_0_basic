@@ -189,6 +189,7 @@
     - requests库
     - bs4库
     - lxml库
+- [mysql-crud](db/README.md)
     
 ---
 
